@@ -28,3 +28,18 @@ def test_packaged_service_runs_assessment(monkeypatch):
     assert result.decision.framework_source.library_version == "1.1.0"
     assert result.decision.framework_source.status == "loaded"
     assert result.recommendations.summary.total_controls == 70
+
+
+def test_packaged_service_guides_incomplete_input(monkeypatch):
+    for name in (
+        "AI_GOVERNANCE_WORKSPACE",
+        "AI_GOVERNANCE_FRAMEWORK",
+        "AI_GOVERNANCE_CONTROL_PLANE",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    result = build_service().validate_assessment_input(
+        {"assessment_id": "partial-001", "system_name": "Synthetic Assistant"}
+    )
+    assert result.status == "needs_information"
+    assert any(issue.field == "business_purpose" for issue in result.issues)
+    assert result.assessment is None

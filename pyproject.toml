@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-governance-assistant"
-version = "0.1.1"
+version = "0.2.0"
 description = "MCP interface for the reusable AI governance decision service"
 requires-python = ">=3.10"
 dependencies = [
   "mcp>=1.12,<2",
-  "ai-governance-control-plane @ git+https://github.com/danvanbeeksec/ai-governance-control-plane.git@623a742854fba1f9c40aa7af20455ac9f378fa18",
+  "ai-governance-control-plane @ git+https://github.com/danvanbeeksec/ai-governance-control-plane.git@73c45fc3b405185930f1384a870c7409a5f50071",
 ]
 
 [project.scripts]
