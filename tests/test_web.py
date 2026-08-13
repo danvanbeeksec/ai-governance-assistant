@@ -2,6 +2,12 @@ from pathlib import Path
 
 from streamlit.testing.v1 import AppTest
 
+from ai_governance_assistant.web_launcher import format_tier
+
+
+def test_tier_uses_canonical_tier_name():
+    assert format_tier("tier_3") == "Tier 3"
+
 
 def test_web_demo_loads_without_external_services():
     app_path = Path(__file__).parents[1] / "src/ai_governance_assistant/web.py"
