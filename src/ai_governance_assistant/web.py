@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ai_governance_assistant.config import build_service
+from ai_governance_assistant.web_launcher import format_tier
 
 
 LABELS = {
@@ -92,7 +93,7 @@ def render() -> None:
     result = service.assess_ai_system(validation.assessment)
     decision = result.decision
     col1, col2, col3 = st.columns(3)
-    col1.metric("Final tier", decision.final_tier_label or decision.final_tier)
+    col1.metric("Final tier", format_tier(decision.final_tier))
     col2.metric(
         "Applicable controls",
         result.recommendations.summary.applicable_system_controls,
