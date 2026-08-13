@@ -1,0 +1,44 @@
+# Replace every angle-bracket placeholder before deployment.
+name: <app-name>
+type: Microsoft.App/containerApps
+location: <azure-region>
+resourceGroup: <resource-group>
+properties:
+  managedEnvironmentId: <managed-environment-resource-id>
+  configuration:
+    activeRevisionsMode: Single
+    ingress:
+      external: true
+      targetPort: 8000
+      transport: auto
+    secrets:
+      - name: governance-api-key
+        value: <long-random-api-key>
+  template:
+    containers:
+      - name: ai-governance-assistant
+        image: <registry>/<image>:0.4.0
+        command:
+          - ai-governance-assistant-http
+        env:
+          - name: AI_GOVERNANCE_API_KEY
+            secretRef: governance-api-key
+          - name: AI_GOVERNANCE_PORT
+            value: "8000"
+        probes:
+          - type: Liveness
+            httpGet:
+              path: /healthz
+              port: 8000
+            periodSeconds: 30
+          - type: Readiness
+            httpGet:
+              path: /readyz
+              port: 8000
+            periodSeconds: 10
+        resources:
+          cpu: 0.5
+          memory: 1Gi
+    scale:
+      minReplicas: 0
+      maxReplicas: 2

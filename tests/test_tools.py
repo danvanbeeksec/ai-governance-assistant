@@ -13,10 +13,18 @@ class Serializable:
 
 class FakeService:
     def get_assessment_requirements(self):
-        return Serializable({"fields": ["assessment_id"]})
+        return Serializable({"fields": ["system_name"], "managed_fields": ["assessment_id"]})
 
-    def validate_assessment_input(self, facts, proposed_inferences=None):
-        return Serializable({"facts": facts, "proposed_inferences": proposed_inferences})
+    def validate_assessment_input(
+        self, facts, proposed_inferences=None, managed_facts=None
+    ):
+        return Serializable(
+            {
+                "facts": facts,
+                "proposed_inferences": proposed_inferences,
+                "managed_facts": managed_facts,
+            }
+        )
 
     def assess_ai_system(self, value):
         return Serializable({"operation": "assess", "input": value})
@@ -32,11 +40,22 @@ class FakeService:
 
 
 def test_tools_delegate_without_implementing_governance_logic():
-    assert __version__ == "0.3.0"
-    tools = GovernanceTools(FakeService())
-    assert tools.get_assessment_requirements()["fields"] == ["assessment_id"]
+    assert __version__ == "0.4.0"
+    tools = GovernanceTools(FakeService(), assessment_id_factory=lambda: "ASM-TEST")
+    assert tools.get_assessment_requirements()["fields"] == ["system_name"]
     assert tools.validate_assessment_input({"x": 1})["facts"] == {"x": 1}
-    assert tools.assess_ai_system({"x": 1})["operation"] == "assess"
-    assert tools.get_applicable_controls({"x": 1})["operation"] == "controls"
+    assert tools.validate_assessment_input({"x": 1})["managed_facts"] == {
+        "assessment_id": "ASM-TEST"
+    }
+    assert tools.assess_ai_system({"x": 1})["input"]["assessment_id"] == "ASM-TEST"
+    assert tools.get_applicable_controls({"x": 1})["input"]["assessment_id"] == "ASM-TEST"
     assert tools.explain_control("AI-GOV-001") == {"control_id": "AI-GOV-001"}
-    assert tools.compare_ai_design_options({"a": 1}, {"b": 2})["right"] == {"b": 2}
+    comparison = tools.compare_ai_design_options({"a": 1}, {"b": 2})
+    assert comparison["left"]["assessment_id"] == "ASM-TEST"
+    assert comparison["right"]["assessment_id"] == "ASM-TEST"
+
+
+def test_caller_supplied_assessment_id_is_preserved_for_compatibility():
+    tools = GovernanceTools(FakeService(), assessment_id_factory=lambda: "ASM-NEW")
+    result = tools.assess_ai_system({"assessment_id": "EXISTING"})
+    assert result["input"]["assessment_id"] == "EXISTING"

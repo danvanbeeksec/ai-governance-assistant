@@ -28,3 +28,19 @@ jobs:
         run: python -m pip wheel . --no-deps --wheel-dir dist
       - name: Build local distribution image
         run: docker build -t ai-governance-assistant:test .
+      - name: Verify hosted HTTP container
+        env:
+          AI_GOVERNANCE_API_KEY: synthetic-ci-api-key
+        run: |
+          trap 'docker rm --force governance-http >/dev/null 2>&1 || true' EXIT
+          docker run --detach --name governance-http --publish 8000:8000 \
+            --env AI_GOVERNANCE_API_KEY \
+            ai-governance-assistant:test ai-governance-assistant-http
+          for attempt in {1..30}; do
+            if curl --fail --silent http://localhost:8000/readyz; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs governance-http
+          exit 1

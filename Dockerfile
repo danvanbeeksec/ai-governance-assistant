@@ -12,5 +12,5 @@ FROM python:3.12-slim
 COPY --from=builder /install /usr/local
 
 USER 65534
-EXPOSE 8501
+EXPOSE 8000 8501
 CMD ["ai-governance-assistant"]
