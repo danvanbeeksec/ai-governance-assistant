@@ -13,9 +13,9 @@ All assessment tools accept the Control Plane's canonical structured assessment 
 
 ## Local development
 
-Keep sibling checkouts of all three repositories in one workspace. Install this package in a virtual environment, then run `ai-governance-assistant`. The default stdio transport is suitable for local MCP clients.
+Install this package in a virtual environment, then run `ai-governance-assistant`. The default stdio transport is suitable for local MCP clients. Normal operation uses the Framework and Control Plane policy resources supplied by the pinned installed packages, so sibling repositories are not required.
 
-Set `AI_GOVERNANCE_WORKSPACE` when the repositories do not share a parent directory. `AI_GOVERNANCE_FRAMEWORK` and `AI_GOVERNANCE_CONTROL_PLANE` can override the individual locations.
+For reviewed local development overrides, set `AI_GOVERNANCE_WORKSPACE` to a parent containing sibling repositories. Alternatively, set both `AI_GOVERNANCE_FRAMEWORK` and `AI_GOVERNANCE_CONTROL_PLANE`. Partial overrides fail closed.
 
 Run tests with `python -m pytest`.
 
