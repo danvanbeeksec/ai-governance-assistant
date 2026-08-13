@@ -26,3 +26,5 @@ jobs:
         run: python -m compileall -q src
       - name: Build installable Assistant wheel
         run: python -m pip wheel . --no-deps --wheel-dir dist
+      - name: Build local distribution image
+        run: docker build -t ai-governance-assistant:test .

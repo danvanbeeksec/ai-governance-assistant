@@ -1,4 +1,5 @@
 from ai_governance_assistant.tools import GovernanceTools
+from ai_governance_assistant import __version__
 
 
 class Serializable:
@@ -31,6 +32,7 @@ class FakeService:
 
 
 def test_tools_delegate_without_implementing_governance_logic():
+    assert __version__ == "0.3.0"
     tools = GovernanceTools(FakeService())
     assert tools.get_assessment_requirements()["fields"] == ["assessment_id"]
     assert tools.validate_assessment_input({"x": 1})["facts"] == {"x": 1}

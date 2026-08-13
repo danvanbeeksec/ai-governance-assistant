@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ai-governance-assistant": {
+      "command": "ai-governance-assistant",
+      "args": []
+    }
+  }
+}

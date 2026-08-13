@@ -1,6 +1,6 @@
 # AI Governance Assistant
 
-Private MCP interface for the AI Governance Control Plane. This repository contains interface and configuration code only. It does not own controls, risk scoring, applicability rules, or governance decisions.
+Public MCP and local demonstration interface for the AI Governance Control Plane. This repository contains interface and configuration code only. It does not own controls, risk scoring, applicability rules, or governance decisions.
 
 ## Tools
 
@@ -17,9 +17,50 @@ Assessment execution tools accept the Control Plane's canonical structured asses
 
 | Assistant | Control Plane | Control Framework |
 | --- | --- | --- |
+| 0.3.0 | 0.4.0 | 1.1.0 |
 | 0.2.0 | 0.4.0 | 1.1.0 |
 
 The Assistant pins the reviewed Control Plane source commit, which in turn pins the reviewed Framework source commit. This table identifies the human-readable release versions represented by that dependency chain.
+
+## Choose an access option
+
+### Local MCP with pipx
+
+This is the recommended option for an MCP client that supports local stdio servers. It has no hosted service or per-assessment charge.
+
+```bash
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.3.0"
+ai-governance-assistant
+```
+
+Use [`examples/mcp-config.pipx.json`](examples/mcp-config.pipx.json) as a client configuration template. The client should launch the server; do not start it separately.
+
+### Docker MCP server
+
+```bash
+docker build -t ai-governance-assistant:0.3.0 .
+```
+
+Use [`examples/mcp-config.docker.json`](examples/mcp-config.docker.json) to let an MCP client launch the container over stdio.
+
+### Local web demonstration without an LLM
+
+```bash
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.3.0"
+pipx inject ai-governance-assistant "streamlit>=1.41,<2"
+ai-governance-assistant-web
+```
+
+Or run the web demonstration from Docker:
+
+```bash
+docker run --rm -p 8501:8501 ai-governance-assistant:0.3.0 \
+  ai-governance-assistant-web --server.address=0.0.0.0
+```
+
+Open `http://localhost:8501`. The form calls the same deterministic Control Plane service and does not require a model or API key.
+
+See [`docs/installation.md`](docs/installation.md) for installation, client configuration, verification, and security guidance.
 
 ## Local development
 
@@ -31,6 +72,8 @@ Run tests with `python -m pytest`.
 
 The test suite launches the installed stdio server and exercises all six tools through an MCP client session. Public-safe synthetic fixtures cover guided intake, explicit inference confirmation, four AI design contexts, deterministic results, framework provenance, control explanation, and design comparison. GitHub Actions runs the same acceptance journey.
 
-## Scope
+## Safety and scope
 
 This foundation does not provide approvals, evidence management, inventory expansion, authentication, hosted transport, legal conclusions, or natural-language inference. Tool outputs require human review and preserve the framework provenance emitted by the Control Plane.
+
+Use only fictional or synthetic information. See [`SECURITY.md`](SECURITY.md) for public-use boundaries and vulnerability reporting.
