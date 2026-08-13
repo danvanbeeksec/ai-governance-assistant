@@ -4,12 +4,14 @@ Private MCP interface for the AI Governance Control Plane. This repository conta
 
 ## Tools
 
+- `get_assessment_requirements`: return canonical intake fields, allowed values, and questions.
+- `validate_assessment_input`: validate partial facts and proposed inferences without assigning risk.
 - `assess_ai_system`: run a validated assessment and return the risk decision plus control recommendations.
 - `get_applicable_controls`: return the deterministic recommendation set for an assessment.
 - `explain_control`: retrieve one authoritative control, including applicability metadata.
 - `compare_ai_design_options`: assess two complete design options and report tier and applicable-control differences.
 
-All assessment tools accept the Control Plane's canonical structured assessment contract. Natural-language fact extraction is intentionally deferred because guessed inputs would weaken determinism.
+Assessment execution tools accept the Control Plane's canonical structured assessment contract. Guided intake can identify missing or invalid facts before execution. Natural-language extraction remains a client responsibility, and proposed inferences require a stated basis plus explicit confirmation before the Control Plane will use them.
 
 ## Local development
 
