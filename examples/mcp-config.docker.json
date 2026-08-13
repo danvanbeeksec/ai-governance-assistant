@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ai-governance-assistant": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "ai-governance-assistant:0.3.0"]
+    }
+  }
+}

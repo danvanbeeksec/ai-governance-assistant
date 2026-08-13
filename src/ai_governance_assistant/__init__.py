@@ -2,4 +2,6 @@
 
 from .tools import GovernanceTools
 
-__all__ = ["GovernanceTools"]
+__version__ = "0.3.0"
+
+__all__ = ["GovernanceTools", "__version__"]
