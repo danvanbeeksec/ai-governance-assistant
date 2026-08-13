@@ -54,13 +54,13 @@ async def _run_acceptance_journey() -> None:
                 field["field"] for field in requirements["fields"] if field["required"]
             ]
             assert required_fields[:3] == [
-                "assessment_id",
                 "system_name",
                 "business_purpose",
+                "accountable_owner",
             ]
+            assert requirements["managed_fields"] == ["assessment_id"]
 
             partial_facts = {
-                "assessment_id": "ACC-PARTIAL",
                 "system_name": "Synthetic Incomplete Assistant",
             }
             first_partial = await _call(
@@ -141,6 +141,14 @@ async def _run_acceptance_journey() -> None:
                 )
                 assert decision["framework_source"]["library_version"] == "1.1.0"
                 assert decision["framework_source"]["status"] == "loaded"
+
+            without_id = dict(scenarios["internal_assistant"])
+            without_id.pop("assessment_id")
+            ready_without_id = await _call(
+                session, "validate_assessment_input", {"facts": without_id}
+            )
+            assert ready_without_id["status"] == "ready_for_assessment"
+            assert ready_without_id["assessment"]["assessment_id"].startswith("ASM-")
 
             repeated = await _call(
                 session,

@@ -1,6 +1,6 @@
 # Installation and local use
 
-The Assistant supports three local access paths. All of them run the deterministic governance service on the user's machine. None requires an OpenAI API key.
+The Assistant supports three local access paths and one separately hosted MCP path. Local paths run the deterministic governance service on the user's machine and require no OpenAI API key.
 
 ## Requirements
 
@@ -14,7 +14,7 @@ The Assistant supports three local access paths. All of them run the determinist
 Install the released package and its Git-pinned dependencies in an isolated environment:
 
 ```bash
-pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.3.0"
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
 ```
 
 Confirm the command is available without starting the stdio server:
@@ -36,7 +36,7 @@ Do not type into the server process or send blank lines to it. Stdio accepts JSO
 Build the image:
 
 ```bash
-docker build -t ai-governance-assistant:0.3.0 .
+docker build -t ai-governance-assistant:0.4.0 .
 ```
 
 Start with `examples/mcp-config.docker.json`. The `-i` argument is required because MCP communicates through the container's standard input and output. Do not add `-t`, because terminal formatting can corrupt the protocol stream.
@@ -46,7 +46,7 @@ Start with `examples/mcp-config.docker.json`. The `-i` argument is required beca
 Install the Assistant and optional web dependency:
 
 ```bash
-pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.3.0"
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
 pipx inject ai-governance-assistant "streamlit>=1.41,<2"
 ai-governance-assistant-web
 ```
@@ -54,6 +54,27 @@ ai-governance-assistant-web
 Open `http://localhost:8501`, complete the synthetic assessment, and select **Assess design**. The result includes the risk tier, deterministic explanation, applicable controls, and Framework provenance.
 
 The web demonstration has no authentication. Keep it bound to the local machine. Do not expose it to a public network without a separate production security design.
+
+## Option 4: authenticated Streamable HTTP
+
+For local transport testing only:
+
+```bash
+export AI_GOVERNANCE_API_KEY="replace-with-a-long-random-test-value"
+ai-governance-assistant-http
+```
+
+The MCP endpoint is `http://localhost:8000/mcp`. Clients must send the API key in the `x-api-key` header. Health and readiness probes are available at `/healthz` and `/readyz`. Do not expose a workstation listener to the internet.
+
+The equivalent container command is:
+
+```bash
+docker run --rm -p 8000:8000 \
+  -e AI_GOVERNANCE_API_KEY="replace-with-a-long-random-test-value" \
+  ai-governance-assistant:0.4.0 ai-governance-assistant-http
+```
+
+See `docs/microsoft-365-copilot.md` for the hosted path.
 
 ## Verification checklist
 
@@ -78,7 +99,7 @@ For the web form:
 Upgrade a pipx installation to a new tag:
 
 ```bash
-pipx reinstall "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.3.0"
+pipx reinstall "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
 ```
 
 Remove it with:
@@ -90,5 +111,5 @@ pipx uninstall ai-governance-assistant
 Remove the local Docker image with:
 
 ```bash
-docker image rm ai-governance-assistant:0.3.0
+docker image rm ai-governance-assistant:0.4.0
 ```

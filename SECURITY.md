@@ -4,7 +4,9 @@
 
 This repository is a synthetic governance demonstration, not a production authorization, assessment, evidence, legal-advice, or recordkeeping system. Do not submit personal, confidential, employer, client, regulated, security-sensitive, or other nonpublic information.
 
-The local MCP server and optional web demonstration intentionally provide no authentication, persistence, database, or telemetry. Bind the web demonstration only to interfaces and networks you intend to expose. Public deployment requires an independent security review, authentication, abuse controls, logging decisions, and privacy analysis.
+The local stdio MCP server and optional web demonstration intentionally provide no authentication, persistence, database, or telemetry. Bind the web demonstration only to interfaces and networks you intend to expose.
+
+The Streamable HTTP server fails closed unless `AI_GOVERNANCE_API_KEY` is configured and requires that value in the `x-api-key` header. This shared-secret mechanism is an initial interoperability control. Public deployment still requires an independent security review, secret rotation, TLS termination, network restrictions, abuse controls, logging decisions, and privacy analysis. A production deployment should consider user-specific identity and authorization instead of a shared key.
 
 ## Reporting a vulnerability
 
