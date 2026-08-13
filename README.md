@@ -13,6 +13,14 @@ Private MCP interface for the AI Governance Control Plane. This repository conta
 
 Assessment execution tools accept the Control Plane's canonical structured assessment contract. Guided intake can identify missing or invalid facts before execution. Natural-language extraction remains a client responsibility, and proposed inferences require a stated basis plus explicit confirmation before the Control Plane will use them.
 
+## Release compatibility
+
+| Assistant | Control Plane | Control Framework |
+| --- | --- | --- |
+| 0.2.0 | 0.4.0 | 1.1.0 |
+
+The Assistant pins the reviewed Control Plane source commit, which in turn pins the reviewed Framework source commit. This table identifies the human-readable release versions represented by that dependency chain.
+
 ## Local development
 
 Install this package in a virtual environment, then run `ai-governance-assistant`. The default stdio transport is suitable for local MCP clients. Normal operation uses the Framework and Control Plane policy resources supplied by the pinned installed packages, so sibling repositories are not required.
