@@ -21,6 +21,8 @@ For reviewed local development overrides, set `AI_GOVERNANCE_WORKSPACE` to a par
 
 Run tests with `python -m pytest`.
 
+The test suite launches the installed stdio server and exercises all six tools through an MCP client session. Public-safe synthetic fixtures cover guided intake, explicit inference confirmation, four AI design contexts, deterministic results, framework provenance, control explanation, and design comparison. GitHub Actions runs the same acceptance journey.
+
 ## Scope
 
 This foundation does not provide approvals, evidence management, inventory expansion, authentication, hosted transport, legal conclusions, or natural-language inference. Tool outputs require human review and preserve the framework provenance emitted by the Control Plane.

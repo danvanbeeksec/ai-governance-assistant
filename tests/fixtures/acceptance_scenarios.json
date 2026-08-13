@@ -1,0 +1,62 @@
+{
+  "internal_assistant": {
+    "assessment_id": "ACC-INTERNAL",
+    "system_name": "Synthetic Internal Assistant",
+    "business_purpose": "Summarize fictional internal meeting notes for employee review.",
+    "accountable_owner": "Fictional Collaboration Services Manager",
+    "autonomy_level": "human_supervised",
+    "information_sensitivity": "internal",
+    "human_review": "prior_to_each_meaningful_action",
+    "action_authority": "generate_only",
+    "system_access": "none",
+    "external_reach": "none",
+    "reversibility": "easy",
+    "decision_impact": "operational",
+    "agent_capabilities": []
+  },
+  "vendor_platform": {
+    "assessment_id": "ACC-VENDOR",
+    "system_name": "Synthetic Vendor AI Platform",
+    "business_purpose": "Draft responses from fictional customer records for employee approval.",
+    "accountable_owner": "Fictional Vendor Services Manager",
+    "autonomy_level": "human_supervised",
+    "information_sensitivity": "confidential",
+    "human_review": "prior_to_each_meaningful_action",
+    "action_authority": "recommend",
+    "system_access": "standard",
+    "external_reach": "bounded",
+    "reversibility": "recoverable_with_effort",
+    "decision_impact": "operational",
+    "agent_capabilities": []
+  },
+  "customer_system": {
+    "assessment_id": "ACC-CUSTOMER",
+    "system_name": "Synthetic Customer AI System",
+    "business_purpose": "Recommend access to a fictional public program without prior outcome review.",
+    "accountable_owner": "Fictional Program Services Director",
+    "autonomy_level": "conditionally_autonomous",
+    "information_sensitivity": "internal",
+    "human_review": "no_prior_review",
+    "action_authority": "recommend",
+    "system_access": "standard",
+    "external_reach": "bounded",
+    "reversibility": "difficult",
+    "decision_impact": "regulated_or_consequential",
+    "agent_capabilities": []
+  },
+  "autonomous_agent": {
+    "assessment_id": "ACC-AGENT",
+    "system_name": "Synthetic Public Communications Agent",
+    "business_purpose": "Publish synthetic service-status updates to a fictional public audience.",
+    "accountable_owner": "Fictional Service Communications Lead",
+    "autonomy_level": "autonomous",
+    "information_sensitivity": "public",
+    "human_review": "no_prior_review",
+    "action_authority": "recommend",
+    "system_access": "standard",
+    "external_reach": "broad",
+    "reversibility": "recoverable_with_effort",
+    "decision_impact": "operational",
+    "agent_capabilities": ["external_communication", "persistent_memory"]
+  }
+}
