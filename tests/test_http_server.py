@@ -107,7 +107,7 @@ async def _run_http_journey(base_url: str) -> None:
                 payload = json.loads(result.content[0].text)
                 assert payload["decision"]["final_tier"] == "tier_3"
                 provenance = payload["decision"]["framework_source"]
-                assert provenance["library_version"] == "1.1.0"
+                assert provenance["library_version"] == "1.2.0"
                 assert provenance["status"] == "loaded"
 
 

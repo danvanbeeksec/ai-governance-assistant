@@ -25,7 +25,7 @@ def test_packaged_service_runs_assessment(monkeypatch):
         "agent_capabilities": [],
     }
     result = build_service().assess_ai_system(assessment)
-    assert result.decision.framework_source.library_version == "1.1.0"
+    assert result.decision.framework_source.library_version == "1.2.0"
     assert result.decision.framework_source.status == "loaded"
     assert result.recommendations.summary.total_controls == 70
 
