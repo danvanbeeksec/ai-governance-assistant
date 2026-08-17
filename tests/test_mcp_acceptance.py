@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -40,6 +41,7 @@ async def _run_acceptance_journey() -> None:
     server = StdioServerParameters(
         command=sys.executable,
         args=["-m", "ai_governance_assistant.server"],
+        env={**os.environ},
     )
 
     async with stdio_client(server) as (read, write):
@@ -139,7 +141,7 @@ async def _run_acceptance_journey() -> None:
                 assert decision["framework_source"]["repository"] == (
                     "danvanbeeksec/ai-governance-control-framework"
                 )
-                assert decision["framework_source"]["library_version"] == "1.1.0"
+                assert decision["framework_source"]["library_version"] == "1.2.0"
                 assert decision["framework_source"]["status"] == "loaded"
 
             without_id = dict(scenarios["internal_assistant"])

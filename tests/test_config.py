@@ -13,7 +13,7 @@ def test_default_configuration_uses_packaged_resources(monkeypatch):
 
     service = build_service()
     assert service.framework.source.status == "loaded"
-    assert service.framework.source.library_version == "1.1.0"
+    assert service.framework.source.library_version == "1.2.0"
 
 
 def test_partial_path_override_fails_closed(monkeypatch):
