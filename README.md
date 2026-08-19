@@ -63,6 +63,10 @@ Open `http://localhost:8501`. The form calls the same deterministic Control Plan
 
 See [`docs/installation.md`](docs/installation.md) for installation, client configuration, verification, and security guidance.
 
+### Claude Agent Skill
+
+The portable [`assess-ai-governance`](skills/assess-ai-governance/SKILL.md) Agent Skill guides Claude through fact collection, validation, assessment, control explanation, and design comparison using the MCP tools above. It contains no governance logic or copied controls. See [`docs/claude-skill.md`](docs/claude-skill.md) for Claude Code installation, Claude.ai packaging, and cross-surface limits.
+
 ### Hosted MCP for Microsoft 365 Copilot
 
 The separate `ai-governance-assistant-http` command exposes the same tools at `/mcp` using MCP Streamable HTTP. It requires an `x-api-key` header and provides `/healthz` and `/readyz` probes. The local stdio command remains unchanged.
