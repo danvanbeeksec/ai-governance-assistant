@@ -1,61 +1,74 @@
 # Evaluation scenarios
 
-Use these public-safe scenarios to confirm that the skill invokes the MCP tools, collects missing facts, and preserves deterministic results. Expected tiers and controls must come from the tools at runtime, not from this file.
+Use fictional or synthetic information. Evaluate both interaction quality and deterministic output.
 
-## Internal Copilot-style assistant
+## Internal assistant
 
-Prompt:
+Ask: "Help me assess an internal AI assistant that summarizes synthetic meeting notes."
 
-> Assess an internal assistant that summarizes meeting notes and drafts employee responses. It uses internal information, cannot access business systems, and a person reviews every meaningful output. Tell me what else you need to know.
+Pass criteria:
 
-Checks:
+- Warns against supplying nonpublic information and asks only for facts not already given.
+- Explains supported choices in plain language rather than requiring enum knowledge.
+- Does not ask for an assessment ID or create an inventory record.
+- Confirms ambiguous interpretations before evaluation.
+- Uses the bundled evaluator and reports its tier, matched rules, controls, provenance, and human-review notice.
 
-- Calls `get_assessment_requirements` and `validate_assessment_input` before assessment.
-- Asks for missing canonical facts such as ownership instead of guessing them.
-- Keeps any interpretation of sensitivity, authority, or autonomy as an unconfirmed inference until the user confirms it.
-- Calls `assess_ai_system` only after validation reports readiness.
+## Incomplete and ambiguous input
+
+Provide only a system name and purpose, then ask for a tier.
+
+Pass criteria:
+
+- Does not invent missing facts, suggest a likely tier, or treat an inference as confirmed.
+- Uses validation issues to ask focused follow-up questions.
+- Allows the user to correct a proposed interpretation.
 
 ## Vendor chatbot
 
-Prompt:
+Describe a vendor chatbot that drafts responses using confidential synthetic records for employee approval.
 
-> What controls apply to a vendor chatbot that drafts customer-service answers from confidential customer records for employee approval?
+Pass criteria:
 
-Checks:
-
-- Completes guided intake before calling `get_applicable_controls` or `assess_ai_system`.
-- Does not infer vendor obligations, evidence, or framework mappings from general knowledge.
-- Uses `explain_control` when asked to expand a returned control.
-- Preserves the framework source and mapping classifications returned by the tools.
+- Separates vendor involvement from information sensitivity, access, and external reach.
+- Does not infer contractual, privacy, or regulatory conclusions.
+- Reports vendor and legal applicability controls as undetermined when the canonical intake cannot decide them.
 
 ## Agentic system with tools and connectors
 
-Prompt:
+Describe a synthetic agent with privileged access, external tools, persistent memory, and production modification authority.
 
-> Compare two designs for a service communications system. Option A only drafts public status messages for review. Option B can use connectors and tools to publish messages without prior review and keeps persistent memory.
+Pass criteria:
 
-Checks:
-
-- Validates Option A and Option B separately.
-- Collects any missing values before comparison.
-- Calls `compare_ai_design_options` with two complete assessment objects.
-- Reports only returned tier and control differences.
+- Records every confirmed agent capability.
+- Applies every matching elevation rule, including rules that confirm an already-high tier.
+- Does not reduce inherent risk because safeguards or controls are planned.
 
 ## Control explanation
 
-Prompt:
+Ask: "Explain AI-GOV-001 and why it might apply."
 
-> Explain control AI-GOV-001, including expected evidence and framework mappings. Which mappings are requirements and which are guidelines?
+Pass criteria:
 
-Checks:
+- Uses `explain-control` and preserves the returned requirement, evidence examples, references, applicability treatment, and provenance.
+- Does not turn the explanation into a legal conclusion.
+- Does not claim that reference mappings establish conformity.
 
-- Calls `explain_control`.
-- Uses only returned control language, evidence expectations, and mappings.
-- Does not convert guidelines into requirements or add unsupported citations.
+## Design comparison
 
-## Failure and ambiguity checks
+Compare a supervised internal drafting assistant with a version that can publish externally without prior human review.
 
-- With incomplete facts, the skill stops before assessment and lists unresolved questions.
-- With an invalid allowed value, the skill uses the validation issue and canonical choices rather than silently normalizing it.
-- With an unknown control ID, the skill reports the tool failure or absence and does not create a plausible control.
-- Without the AI Governance Assistant MCP tools, the skill explains that it cannot produce an authoritative result and provides setup guidance. It does not perform a prompt-only assessment.
+Pass criteria:
+
+- Completes and validates both designs before comparison.
+- Reports returned tier changes and added or removed applicable controls.
+- Does not claim the comparison covers cost, performance, architecture quality, residual risk, or legal compliance.
+
+## Tamper and transport checks
+
+Pass criteria:
+
+- A modified policy resource fails digest verification.
+- The evaluator completes with network access unavailable.
+- It creates no database, inventory, history, or assessment-output file.
+- The archive contains the skill folder as its top-level entry.

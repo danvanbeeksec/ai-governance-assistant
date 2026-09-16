@@ -14,7 +14,21 @@ GovernanceDecisionService (Control Plane)
 Risk and applicability      Provenance-validated Control Framework
 ```
 
-The framework is the control authority. The Control Plane owns assessment validation, risk evaluation, applicability evaluation, and comparison. The Assistant converts MCP tool calls to service calls and serializes typed results. It must not copy governance logic or framework content.
+The Claude skill is a separate distribution path:
+
+```text
+Claude guided interview
+          |
+          v
+Bundled dependency-free evaluator
+          |
+          v
+Versioned assessment, risk, applicability, and control snapshots
+```
+
+The skill snapshots are generated from the same pinned Control Plane and Framework dependency chain and carry resource digests and source provenance. They require no transport or inventory repository, but they must be rebuilt to receive authority updates.
+
+The framework is the control authority. The Control Plane owns assessment validation, risk evaluation, applicability evaluation, and comparison. The MCP runtime converts tool calls to service calls and serializes typed results; its transport code must not copy governance logic or framework content. The Claude distribution is a generated snapshot whose parity tests and provenance preserve that authority boundary.
 
 Guided intake follows the same boundary. The Assistant exposes requirement and validation tools, while the Control Plane determines completeness and supported values. No risk decision occurs until a complete canonical assessment exists.
 

@@ -1,0 +1,27 @@
+{
+  "applicability_methodology": {
+    "id": "ai-control-applicability",
+    "status": "approved",
+    "version": "1.0.0"
+  },
+  "assessment_schema_version": "0.1.0",
+  "framework_source": {
+    "commit": "8c95890cb2baf298e460a9a24978503286bc6e2f",
+    "digest": "sha256:dd7f696df558302808e71a0fab74153f815b86fa923335806a791146d78fdcc6",
+    "library_version": "1.2.0",
+    "repository": "danvanbeeksec/ai-governance-control-framework",
+    "schema_version": "2.1",
+    "status": "loaded"
+  },
+  "resource_sha256": {
+    "assessment-requirements.json": "0f734eb05cef1c57c844206e977aa8d546ff4af4002c26ce9543e2041a7154a8",
+    "control-applicability.json": "3fa039908914fc0cc2bb99b4b35dcd08372c76e596362de7dc15d389ec05c9fb",
+    "controls.json": "a3a1f1320cc66ee7800fca35ed063cdf72e3d11c9dcabda7d6e2879127bd5e39",
+    "risk-model.json": "bd469c39232812e75ba266b4cdcf0e927b323975842df3a88892e9793f2dc86d"
+  },
+  "risk_model": {
+    "id": "ai-governance-inherent-risk",
+    "version": "0.1.0"
+  },
+  "skill_package_version": "0.1.0"
+}

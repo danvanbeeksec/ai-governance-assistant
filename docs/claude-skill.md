@@ -1,19 +1,25 @@
 # Claude Agent Skill
 
-The repository includes `skills/assess-ai-governance`, a portable Agent Skill that orchestrates the existing MCP interface. The Control Framework remains the control authority, the Control Plane remains the risk and decision service, and this repository remains the integration layer.
+The repository includes `skills/assess-ai-governance`, a portable Agent Skill that conducts a guided AI governance interview and runs a bundled deterministic evaluator. It does not require the MCP server, a remote connector, an AI-system inventory, or a database.
 
-## What the skill adds
+## What the skill contains
 
-The skill instructs Claude to:
+- `SKILL.md`: interview, confirmation, safety, evaluation, and reporting instructions.
+- `scripts/assess.py`: a dependency-free evaluator for validation, inherent-risk classification, control applicability, control explanation, and design comparison.
+- `references/assessment-requirements.json`: canonical questions and supported values.
+- `references/risk-model.json`: baseline matrix and elevation rules.
+- `references/control-applicability.json`: approved applicability methodology.
+- `references/controls.json`: the pinned control-framework snapshot.
+- `references/package-manifest.json`: source provenance and resource digests.
+- `references/intake-guide.md`: plain-language interpretation guidance.
 
-- collect canonical facts before assessment;
-- distinguish explicit facts, confirmed inferences, and unresolved questions;
-- call the MCP tools instead of reproducing governance logic;
-- explain deterministic tiers, drivers, controls, evidence expectations, and mappings;
-- preserve framework provenance and mapping classifications;
-- stop rather than invent an outcome when the tools are absent or input is incomplete.
+The risk and control resources are exported from the Assistant's pinned Control Plane dependency. They are point-in-time release artifacts, not a new governance authority. The build fails closed at runtime if a resource digest is changed without rebuilding the manifest.
 
-Detailed evaluation prompts live in `skills/assess-ai-governance/references/evaluation-scenarios.md`. Surface-specific commands and packaging steps live in `skills/assess-ai-governance/references/setup.md`.
+## Interaction model
+
+Claude collects explicit facts, proposes interpretations when needed, and waits for confirmation before using them. The evaluator rejects incomplete or unsupported input instead of inferring it. Completed results preserve the baseline tier, every matched elevation rule, the final inherent-risk tier, control categories, open applicability questions, model versions, and framework provenance.
+
+The evaluator creates an ephemeral assessment ID but no inventory record. It reads assessment JSON from standard input, writes result JSON to standard output, makes no network calls, and writes no assessment data.
 
 ## Validate and package
 
@@ -29,15 +35,24 @@ Run Anthropic-compatible metadata validation:
 python /path/to/quick_validate.py skills/assess-ai-governance
 ```
 
-Create the Claude.ai upload archive from the repository's `skills` directory:
+Refresh the exported resources and create the upload archive:
 
 ```bash
-cd skills
-zip -r ../assess-ai-governance.zip assess-ai-governance
+python scripts/build_claude_skill.py --zip dist/assess-ai-governance.zip
 ```
 
-Inspect the archive before upload. Its top-level entry must be the `assess-ai-governance/` folder, which contains `SKILL.md` and `references/`.
+Inspect the archive before upload. Its top-level entry must be the `assess-ai-governance/` folder containing `SKILL.md`, `scripts/`, and `references/`.
 
-## Important Claude.ai limit
+## Claude.ai
 
-Uploading the ZIP installs the instructions only. Claude.ai cannot launch the local stdio command. A working Claude.ai assessment also requires an OAuth-compatible public HTTPS MCP connector. The repository's current hosted example uses a shared `x-api-key`, which is not an authentication option in Anthropic's documented custom-connector setup. Do not expose the service without authentication. OAuth support is follow-up work outside this skill-only change.
+Enable code execution, then open **Customize > Skills**, select **+**, **Create skill**, and **Upload a skill**. Upload `assess-ai-governance.zip` and enable it. No custom connector is required.
+
+## Claude Code
+
+Copy the skill folder to `.claude/skills/assess-ai-governance/` for a project or `~/.claude/skills/assess-ai-governance/` for personal use. No MCP configuration is required for the packaged assessment.
+
+## Release boundary
+
+Rebuild and retest the ZIP whenever the assessment contract, risk model, applicability methodology, or control framework changes. The skill package is not automatically updated when a source repository changes.
+
+Do not submit personal, confidential, employer, client, regulated, security-sensitive, or other nonpublic information unless the intended Claude deployment and its retention settings have been separately approved. The result is decision support and does not establish approval, residual risk, legal compliance, certification, or evidence sufficiency.

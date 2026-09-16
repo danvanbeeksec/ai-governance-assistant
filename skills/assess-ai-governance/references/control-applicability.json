@@ -1,0 +1,1399 @@
+{
+  "controls": [
+    {
+      "control_id": "AI-GOV-001",
+      "enterprise_dependency": true,
+      "rationale": "Every adopting organization requires an accountable governance mandate and decision rights.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-GOV-002",
+      "enterprise_dependency": true,
+      "rationale": "Every governed AI use depends on organization-wide policy and acceptable-use boundaries.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-GOV-003",
+      "enterprise_dependency": true,
+      "rationale": "Every proposed or operating AI system requires inventory coverage and accountable ownership.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-GOV-004",
+      "enterprise_dependency": true,
+      "rationale": "Every AI system requires a context-appropriate risk and impact assessment.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-GOV-005",
+      "enterprise_dependency": true,
+      "rationale": "Every governed use depends on role-appropriate competence and awareness.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-GOV-006",
+      "enterprise_dependency": true,
+      "rationale": "The governance system requires independent challenge and continual improvement.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-SEC-001",
+      "enterprise_dependency": false,
+      "rationale": "External reach or elevated system access establishes a clear architecture and threat-modeling need.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "system_access",
+              "operator": "in",
+              "values": [
+                "standard",
+                "privileged"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Is the system developed, integrated, configured, or otherwise exposed to trust-boundary threats?"
+      ]
+    },
+    {
+      "control_id": "AI-SEC-002",
+      "enterprise_dependency": false,
+      "rationale": "Non-public information, system access, or tool capability establishes an identity and least-privilege need.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "information_sensitivity",
+              "operator": "in",
+              "values": [
+                "internal",
+                "confidential",
+                "restricted"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "system_access",
+              "operator": "in",
+              "values": [
+                "standard",
+                "privileged"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "external_tools"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system authenticate users or non-human actors or access protected services?"
+      ]
+    },
+    {
+      "control_id": "AI-SEC-003",
+      "enterprise_dependency": false,
+      "rationale": "Tool use or external communication creates plausible untrusted-content pathways.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "external_tools",
+                "external_communication"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system receive prompts, files, retrieved content, messages, web content, or other untrusted input?"
+      ]
+    },
+    {
+      "control_id": "AI-SEC-004",
+      "enterprise_dependency": false,
+      "rationale": "Every system output must be handled according to its receiving context and potential use.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-SEC-005",
+      "enterprise_dependency": false,
+      "rationale": "The current intake does not identify whether code, configurations, integrations, or customizations are developed or maintained.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Is the system internally developed, materially integrated, configured, or customized?"
+      ]
+    },
+    {
+      "control_id": "AI-SEC-006",
+      "enterprise_dependency": false,
+      "rationale": "Autonomy, tools, external reach, or consequential action creates resource and service-abuse exposure.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "autonomy_level",
+              "operator": "in",
+              "values": [
+                "autonomous",
+                "conditionally_autonomous"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "external_tools",
+                "delegation",
+                "persistent_memory"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Is the system production, usage-priced, recursive, or computationally intensive?"
+      ]
+    },
+    {
+      "control_id": "AI-DAT-001",
+      "enterprise_dependency": true,
+      "rationale": "Every AI system processes or generates data and requires authorized use and minimization.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-DAT-002",
+      "enterprise_dependency": false,
+      "rationale": "Non-public information requires protection proportionate to its sensitivity.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "information_sensitivity",
+              "operator": "in",
+              "values": [
+                "internal",
+                "confidential",
+                "restricted"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system process personal, regulated, contractual, or otherwise specially protected information?"
+      ]
+    },
+    {
+      "control_id": "AI-DAT-003",
+      "enterprise_dependency": false,
+      "rationale": "The current intake does not describe training, retrieval, grounding, evaluation, or decision-support data sources.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "What material data and knowledge sources does the system use, and for what purpose?"
+      ]
+    },
+    {
+      "control_id": "AI-DAT-004",
+      "enterprise_dependency": true,
+      "rationale": "Consequential decision impact establishes a plausible need for individual protections and privacy review.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system use personal data or identify, profile, infer about, or materially affect individuals?"
+      ]
+    },
+    {
+      "control_id": "AI-LCM-001",
+      "enterprise_dependency": false,
+      "rationale": "Every AI system requires documented purpose, boundaries, limitations, and success criteria.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-LCM-002",
+      "enterprise_dependency": false,
+      "rationale": "Every AI system requires proportionate evaluation and release-readiness criteria before use.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-LCM-003",
+      "enterprise_dependency": true,
+      "rationale": "Every AI system requires defined material-change and reassessment triggers.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-LCM-004",
+      "enterprise_dependency": false,
+      "rationale": "Non-public data, external reach, or operational impact establishes a clear suspension and retirement need.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "information_sensitivity",
+              "operator": "in",
+              "values": [
+                "internal",
+                "confidential",
+                "restricted"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "operational",
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Will the system be production, externally used, vendor-dependent, or retain data?"
+      ]
+    },
+    {
+      "control_id": "AI-AGT-001",
+      "enterprise_dependency": false,
+      "rationale": "Autonomous operation, tools, communication, delegation, memory, or action authority establishes agent identity and authority needs.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "autonomy_level",
+              "operator": "in",
+              "values": [
+                "autonomous",
+                "conditionally_autonomous"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "external_tools",
+                "external_communication",
+                "delegation",
+                "persistent_memory"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "modify_nonproduction",
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Can the system plan, invoke services, or act beyond content generation?"
+      ]
+    },
+    {
+      "control_id": "AI-AGT-002",
+      "enterprise_dependency": false,
+      "rationale": "Tool capability, system access, or modification authority requires explicit connector and action boundaries.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "external_tools"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "system_access",
+              "operator": "in",
+              "values": [
+                "standard",
+                "privileged"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "modify_nonproduction",
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system have plugins, code execution, messaging, workflow, or other connector access?"
+      ]
+    },
+    {
+      "control_id": "AI-AGT-003",
+      "enterprise_dependency": false,
+      "rationale": "Material actions or external communication require approval boundaries and irreversible-action safeguards.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "modify_nonproduction",
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "external_communication"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "reversibility",
+              "operator": "in",
+              "values": [
+                "difficult"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Can the system make commitments, affect rights, send messages, execute code, or move value?"
+      ]
+    },
+    {
+      "control_id": "AI-AGT-004",
+      "enterprise_dependency": false,
+      "rationale": "Persistent memory directly establishes a need to protect agent state.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "persistent_memory"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system retain any conversational, task, user, vector, episodic, or cross-session state?"
+      ]
+    },
+    {
+      "control_id": "AI-AGT-005",
+      "enterprise_dependency": false,
+      "rationale": "Delegation capability establishes multi-agent trust and control requirements.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "delegation"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Can the system communicate, coordinate, negotiate, or invoke another AI system?"
+      ]
+    },
+    {
+      "control_id": "AI-AGT-006",
+      "enterprise_dependency": false,
+      "rationale": "Autonomy, privilege, broad reach, material action, or difficult reversibility requires containment and emergency-stop design.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "autonomy_level",
+              "operator": "in",
+              "values": [
+                "autonomous",
+                "conditionally_autonomous"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "system_access",
+              "operator": "in",
+              "values": [
+                "privileged"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "reversibility",
+              "operator": "in",
+              "values": [
+                "difficult"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Could delayed containment materially increase harm?"
+      ]
+    },
+    {
+      "control_id": "AI-OPS-001",
+      "enterprise_dependency": false,
+      "rationale": "The current intake does not establish lifecycle stage or operational deployment.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Will the system operate in production, and what events and decisions require traceability?"
+      ]
+    },
+    {
+      "control_id": "AI-OPS-002",
+      "enterprise_dependency": false,
+      "rationale": "The current intake does not establish production monitoring scope, frequency, or detection needs.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Will the system operate in production, and could delayed detection materially increase harm?"
+      ]
+    },
+    {
+      "control_id": "AI-OPS-003",
+      "enterprise_dependency": true,
+      "rationale": "Every operational AI system depends on enterprise incident response and reporting capability.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-OPS-004",
+      "enterprise_dependency": false,
+      "rationale": "Operational impact, external reach, material action, or difficult reversibility establishes resilience and recovery needs.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "operational",
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "reversibility",
+              "operator": "in",
+              "values": [
+                "recoverable_with_effort",
+                "difficult"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system support material operations or have availability or integrity requirements?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-001",
+      "enterprise_dependency": true,
+      "rationale": "The current intake does not establish whether an external AI supplier or service is used.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Which external models, applications, platforms, data services, plugins, or support providers are involved?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-002",
+      "enterprise_dependency": true,
+      "rationale": "Supplier involvement and contractual exposure are not represented in the canonical assessment.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Does a third party process organizational data or support material operations?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-003",
+      "enterprise_dependency": false,
+      "rationale": "Component sourcing, provenance, and loading behavior are not represented in the canonical assessment.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Does the system use external, open-source, pretrained, downloaded, imported, or dynamically loaded components?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-004",
+      "enterprise_dependency": true,
+      "rationale": "Material supplier and subprocessor relationships are not represented in the canonical assessment.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Which providers and subprocessors can materially change the system or service?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-005",
+      "enterprise_dependency": true,
+      "rationale": "Provider concentration, continuity, and exit dependencies require information not present in the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Could loss or material change of a provider, model, platform, or data source disrupt important operations or controls?"
+      ]
+    },
+    {
+      "control_id": "AI-GOV-007",
+      "enterprise_dependency": true,
+      "rationale": "Every governed AI portfolio depends on defined responsible-AI objectives and measures.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-GOV-008",
+      "enterprise_dependency": true,
+      "rationale": "Exception and residual-risk treatment depends on whether an applicable requirement cannot be met as designed.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Does this system require an exception, compensating control, or residual-risk acceptance?"
+      ]
+    },
+    {
+      "control_id": "AI-GOV-009",
+      "enterprise_dependency": true,
+      "rationale": "Every governed AI portfolio depends on periodic management review of the governance system.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-GOV-010",
+      "enterprise_dependency": true,
+      "rationale": "Every AI system requires a route for concerns, misuse, and adverse impacts to be reported and escalated.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-USE-001",
+      "enterprise_dependency": true,
+      "rationale": "Every assessed use depends on an enterprise process for approving AI tools and configurations.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-USE-002",
+      "enterprise_dependency": true,
+      "rationale": "Every assessed use depends on role-appropriate AI literacy and awareness.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-USE-003",
+      "enterprise_dependency": false,
+      "rationale": "Operational or consequential impact establishes a clear need for user verification of material outputs.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "operational",
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "recommend",
+                "modify_nonproduction",
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Could an incorrect output create more than negligible harm in the intended context?"
+      ]
+    },
+    {
+      "control_id": "AI-USE-004",
+      "enterprise_dependency": true,
+      "rationale": "Workforce AI use depends on enterprise rules for confidential and restricted information.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-INV-001",
+      "enterprise_dependency": true,
+      "rationale": "Reliable governance depends on enterprise discovery and reconciliation beyond self-reported intake.",
+      "section": "enterprise_dependencies",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-INV-002",
+      "enterprise_dependency": false,
+      "rationale": "Every material AI system requires documented models, services, data sources, tools, and dependencies.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-INV-003",
+      "enterprise_dependency": false,
+      "rationale": "Every inventory record requires a current lifecycle state and proportionate review.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-RSK-001",
+      "enterprise_dependency": true,
+      "rationale": "Legal, regulatory, contractual, and sector applicability is not established by the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Which legal, regulatory, contractual, or sector requirements apply to this system and the organization's role?"
+      ]
+    },
+    {
+      "control_id": "AI-RSK-002",
+      "enterprise_dependency": false,
+      "rationale": "Consequential impact or external reach establishes a need for a proportionate AI impact assessment.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Could the system materially affect individuals, employees, customers, or external parties?"
+      ]
+    },
+    {
+      "control_id": "AI-RSK-003",
+      "enterprise_dependency": true,
+      "rationale": "Every completed assessment requires documented treatment of identified risks and accountable acceptance of remaining risk.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-DAT-005",
+      "enterprise_dependency": false,
+      "rationale": "Data acquisition methods and usage rights are not represented in the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "How was each material dataset acquired, and what rights or restrictions govern its AI use?"
+      ]
+    },
+    {
+      "control_id": "AI-DAT-006",
+      "enterprise_dependency": false,
+      "rationale": "Training, evaluation, retrieval, grounding, and feedback transformations are not represented in the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Is data prepared or transformed for training, evaluation, retrieval, grounding, or feedback?"
+      ]
+    },
+    {
+      "control_id": "AI-DAT-007",
+      "enterprise_dependency": false,
+      "rationale": "The current intake does not establish whether data quality or representativeness materially affects behavior or decisions.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Which data materially affects behavior or outcomes, and how are quality and representativeness evaluated?"
+      ]
+    },
+    {
+      "control_id": "AI-DAT-008",
+      "enterprise_dependency": false,
+      "rationale": "Retrieval, grounding, enterprise search, and memory-retrieval behavior are not represented in the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Does the system retrieve or ground responses in documents, knowledge stores, embeddings, or agent memory?"
+      ]
+    },
+    {
+      "control_id": "AI-DAT-009",
+      "enterprise_dependency": false,
+      "rationale": "Feedback loops, adaptive behavior, and provider product-improvement settings are not represented in the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Can user feedback, interactions, or telemetry change the system or be used for provider improvement?"
+      ]
+    },
+    {
+      "control_id": "AI-MOD-001",
+      "enterprise_dependency": false,
+      "rationale": "Every material AI system requires model and behavior-configuration traceability.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-MOD-002",
+      "enterprise_dependency": false,
+      "rationale": "Every material model requires documented suitability evaluation and approval for its intended use.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-MOD-003",
+      "enterprise_dependency": false,
+      "rationale": "Production status and the scope of model, prompt, retrieval, and safety-setting changes are not established by the intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Which behavior-affecting components can change, and what change-control process applies?"
+      ]
+    },
+    {
+      "control_id": "AI-MOD-004",
+      "enterprise_dependency": false,
+      "rationale": "Operational or consequential outcomes establish a clear need for model evaluation and acceptance thresholds.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "operational",
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "recommend",
+                "modify_nonproduction",
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Could model behavior materially affect system outcomes or control effectiveness?"
+      ]
+    },
+    {
+      "control_id": "AI-PLT-001",
+      "enterprise_dependency": false,
+      "rationale": "Shared, hosted, multi-tenant, and multi-environment platform architecture is not represented in the intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Does the system use a shared, hosted, multi-tenant, or multi-environment AI platform?"
+      ]
+    },
+    {
+      "control_id": "AI-PLT-002",
+      "enterprise_dependency": false,
+      "rationale": "Privileged system access establishes an AI platform administration control need.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "system_access",
+              "operator": "in",
+              "values": [
+                "privileged"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Who can administer models, safety settings, data stores, gateways, tenants, or vendor support access?"
+      ]
+    },
+    {
+      "control_id": "AI-PLT-003",
+      "enterprise_dependency": false,
+      "rationale": "External reach, protected service access, or tool use establishes an endpoint and gateway governance need.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "system_access",
+              "operator": "in",
+              "values": [
+                "standard",
+                "privileged"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "agent_capabilities",
+              "operator": "contains_any",
+              "values": [
+                "external_tools"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Does the system expose or consume model endpoints, gateways, brokers, or AI service APIs?"
+      ]
+    },
+    {
+      "control_id": "AI-HUM-001",
+      "enterprise_dependency": false,
+      "rationale": "Autonomy, consequential impact, external reach, or material action establishes a need for effective human oversight.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "autonomy_level",
+              "operator": "in",
+              "values": [
+                "autonomous",
+                "conditionally_autonomous"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "action_authority",
+              "operator": "in",
+              "values": [
+                "modify_production",
+                "execute_material_transaction",
+                "safety_relevant_action"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Do reviewers have sufficient information, time, competence, and authority to intervene effectively?"
+      ]
+    },
+    {
+      "control_id": "AI-HUM-002",
+      "enterprise_dependency": true,
+      "rationale": "Consequential decision impact establishes accountability and contestability requirements.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Can an individual or customer be materially affected, and what review, appeal, or correction route is available?"
+      ]
+    },
+    {
+      "control_id": "AI-HUM-003",
+      "enterprise_dependency": false,
+      "rationale": "External reach or material decision influence establishes a clear disclosure and user-information need.",
+      "section": "system_controls",
+      "treatment": "conditional",
+      "triggers": [
+        {
+          "all": [
+            {
+              "field": "external_reach",
+              "operator": "in",
+              "values": [
+                "bounded",
+                "broad"
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "decision_impact",
+              "operator": "in",
+              "values": [
+                "operational",
+                "consequential",
+                "regulated_or_consequential"
+              ]
+            }
+          ]
+        }
+      ],
+      "unresolved_questions": [
+        "Do users or affected parties need disclosure of AI interaction, generated content, limitations, or human responsibilities?"
+      ]
+    },
+    {
+      "control_id": "AI-OPS-005",
+      "enterprise_dependency": false,
+      "rationale": "Production status and material model, data, retrieval, provider, and context drift are not established by the intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Which changing models, data, retrieval sources, providers, or contextual factors could materially affect outcomes?"
+      ]
+    },
+    {
+      "control_id": "AI-OPS-006",
+      "enterprise_dependency": true,
+      "rationale": "Every governed AI system depends on a process to record, correct, and verify material deficiencies and nonconformities.",
+      "section": "system_controls",
+      "treatment": "universal",
+      "triggers": [],
+      "unresolved_questions": []
+    },
+    {
+      "control_id": "AI-VSC-006",
+      "enterprise_dependency": true,
+      "rationale": "Third-party involvement and provider training or improvement settings are not established by the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Does a third party receive non-public data, and can it use prompts, outputs, telemetry, or artifacts for training or improvement?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-007",
+      "enterprise_dependency": true,
+      "rationale": "Supplier storage and derivation of AI artifacts are not established by the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Can a supplier store or derive prompts, outputs, embeddings, fine-tunes, memory, logs, or other artifacts from organizational data?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-008",
+      "enterprise_dependency": true,
+      "rationale": "Material third-party services and their incident obligations are not established by the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Which material AI suppliers require defined incident notification, evidence preservation, cooperation, and remediation obligations?"
+      ]
+    },
+    {
+      "control_id": "AI-VSC-009",
+      "enterprise_dependency": true,
+      "rationale": "Supplier materiality and available assurance are not established by the current intake.",
+      "section": "system_controls",
+      "treatment": "human_determination",
+      "triggers": [],
+      "unresolved_questions": [
+        "Could supplier failure create material impact, and what independent assurance, evidence, or audit rights are available?"
+      ]
+    }
+  ],
+  "methodology": {
+    "framework_library_version": "1.2.0",
+    "id": "ai-control-applicability",
+    "principle": "Assessment facts may establish applicability, but absence of a trigger does not establish non-applicability.",
+    "status": "approved",
+    "version": "1.0.0"
+  },
+  "outcomes": {
+    "applicable": "The control applies based on a universal treatment or a matched factual trigger.",
+    "inherited_dependency": "An enterprise capability is expected, but provider, scope, configuration, and evidence require confirmation.",
+    "undetermined": "Current assessment facts are insufficient for an applicability decision."
+  },
+  "schema_version": "1.0"
+}

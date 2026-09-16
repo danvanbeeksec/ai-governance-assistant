@@ -1,6 +1,6 @@
 # AI Governance Assistant
 
-Public MCP and local demonstration interface for the AI Governance Control Plane. This repository contains interface and configuration code only. It does not own controls, risk scoring, applicability rules, or governance decisions.
+Public MCP, local demonstration interface, and portable Claude skill for the AI Governance Control Plane. The runtime interfaces do not own controls, risk scoring, applicability rules, or governance decisions. The Claude skill contains versioned, integrity-checked snapshots exported from the pinned governance authorities so it can operate without a service connection.
 
 ## Tools
 
@@ -65,7 +65,15 @@ See [`docs/installation.md`](docs/installation.md) for installation, client conf
 
 ### Claude Agent Skill
 
-The portable [`assess-ai-governance`](skills/assess-ai-governance/SKILL.md) Agent Skill guides Claude through fact collection, validation, assessment, control explanation, and design comparison using the MCP tools above. It contains no governance logic or copied controls. See [`docs/claude-skill.md`](docs/claude-skill.md) for Claude Code installation, Claude.ai packaging, and cross-surface limits.
+The portable [`assess-ai-governance`](skills/assess-ai-governance/SKILL.md) Agent Skill guides Claude through fact collection, validation, assessment, control explanation, and design comparison. Its bundled dependency-free evaluator and versioned policy snapshots require no MCP server, custom connector, inventory, or database.
+
+Build the Claude.ai upload archive with:
+
+```bash
+python scripts/build_claude_skill.py --zip dist/assess-ai-governance.zip
+```
+
+See [`docs/claude-skill.md`](docs/claude-skill.md) for the package boundary, installation, rebuilding, and data-handling limits.
 
 ### Hosted MCP for Microsoft 365 Copilot
 
@@ -85,6 +93,6 @@ The test suite launches both stdio and authenticated Streamable HTTP servers and
 
 ## Safety and scope
 
-This foundation does not provide approvals, evidence management, inventory persistence, legal conclusions, or server-side natural-language inference. Hosted MCP supports shared API-key authentication as an initial interoperability control, not as a complete production identity design. Tool outputs require human review and preserve the framework provenance emitted by the Control Plane.
+This foundation does not provide approvals, evidence management, inventory persistence, legal conclusions, or server-side natural-language inference. The Claude skill performs natural-language intake in the client but requires explicit confirmation before using an interpretation. Hosted MCP supports shared API-key authentication as an initial interoperability control, not as a complete production identity design. All assessment outputs require human review and preserve framework provenance.
 
 Use only fictional or synthetic information. See [`SECURITY.md`](SECURITY.md) for public-use boundaries and vulnerability reporting.

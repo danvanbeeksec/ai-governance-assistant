@@ -1,0 +1,233 @@
+{
+  "baseline_matrix": {
+    "autonomous": {
+      "confidential": "tier_1",
+      "internal": "tier_2",
+      "public": "tier_2",
+      "restricted": "tier_1"
+    },
+    "conditionally_autonomous": {
+      "confidential": "tier_2",
+      "internal": "tier_3",
+      "public": "tier_3",
+      "restricted": "tier_1"
+    },
+    "human_supervised": {
+      "confidential": "tier_3",
+      "internal": "tier_3",
+      "public": "tier_3",
+      "restricted": "tier_1"
+    }
+  },
+  "elevation_rules": [
+    {
+      "id": "ER-001",
+      "minimum_tier": "tier_1",
+      "name": "production_or_material_action_without_prior_review",
+      "reason": "Material, production, or safety-relevant action can occur without prior human approval.",
+      "when": {
+        "action_authority": {
+          "in": [
+            "modify_production",
+            "execute_material_transaction",
+            "safety_relevant_action"
+          ]
+        },
+        "human_review": {
+          "in": [
+            "checkpoints_or_exceptions",
+            "no_prior_review"
+          ]
+        }
+      }
+    },
+    {
+      "id": "ER-002",
+      "minimum_tier": "tier_2",
+      "name": "privileged_agent_capability_combination",
+      "reason": "Privileged access is combined with an agent capability that expands reach or persistence.",
+      "when": {
+        "agent_capabilities": {
+          "any_of": [
+            "external_tools",
+            "external_communication",
+            "delegation",
+            "persistent_memory"
+          ]
+        },
+        "system_access": "privileged"
+      }
+    },
+    {
+      "id": "ER-003",
+      "minimum_tier": "tier_1",
+      "name": "consequential_and_difficult_to_reverse",
+      "reason": "Consequential impact is difficult to reverse after it occurs.",
+      "when": {
+        "decision_impact": {
+          "in": [
+            "consequential",
+            "regulated_or_consequential"
+          ]
+        },
+        "reversibility": "difficult"
+      }
+    },
+    {
+      "id": "ER-004",
+      "minimum_tier": "tier_1",
+      "name": "regulated_decision_without_prior_review",
+      "reason": "A regulated or consequential decision can occur without prior human review.",
+      "when": {
+        "decision_impact": "regulated_or_consequential",
+        "human_review": {
+          "in": [
+            "checkpoints_or_exceptions",
+            "no_prior_review"
+          ]
+        }
+      }
+    },
+    {
+      "id": "ER-005",
+      "minimum_tier": "tier_1",
+      "name": "autonomous_external_communication_at_scale",
+      "reason": "Autonomous external communication has broad reach.",
+      "when": {
+        "agent_capabilities": {
+          "any_of": [
+            "external_communication"
+          ]
+        },
+        "autonomy_level": "autonomous",
+        "external_reach": "broad"
+      }
+    },
+    {
+      "id": "ER-006",
+      "minimum_tier": "tier_1",
+      "name": "restricted_information_backstop",
+      "reason": "Restricted information always requires Tier 1 governance.",
+      "when": {
+        "information_sensitivity": "restricted"
+      }
+    },
+    {
+      "id": "ER-007",
+      "minimum_tier": "tier_1",
+      "name": "autonomous_confidential_information_backstop",
+      "reason": "Autonomous operation involving Confidential information requires Tier 1 governance.",
+      "when": {
+        "autonomy_level": "autonomous",
+        "information_sensitivity": "confidential"
+      }
+    }
+  ],
+  "enums": {
+    "action_authority": [
+      "generate_only",
+      "recommend",
+      "modify_nonproduction",
+      "modify_production",
+      "execute_material_transaction",
+      "safety_relevant_action"
+    ],
+    "agent_capabilities": [
+      "external_tools",
+      "external_communication",
+      "delegation",
+      "persistent_memory"
+    ],
+    "autonomy_level": [
+      "autonomous",
+      "conditionally_autonomous",
+      "human_supervised"
+    ],
+    "decision_impact": [
+      "none",
+      "operational",
+      "consequential",
+      "regulated_or_consequential"
+    ],
+    "external_reach": [
+      "none",
+      "bounded",
+      "broad"
+    ],
+    "human_review": [
+      "prior_to_each_meaningful_action",
+      "checkpoints_or_exceptions",
+      "no_prior_review"
+    ],
+    "information_sensitivity": [
+      "public",
+      "internal",
+      "confidential",
+      "restricted"
+    ],
+    "reversibility": [
+      "easy",
+      "recoverable_with_effort",
+      "difficult"
+    ],
+    "system_access": [
+      "none",
+      "standard",
+      "privileged"
+    ]
+  },
+  "explainability": {
+    "applied_rule_fields": [
+      "rule_id",
+      "reason",
+      "prior_tier",
+      "resulting_tier",
+      "changed_tier"
+    ],
+    "required_output_fields": [
+      "status",
+      "assessment_id",
+      "model_id",
+      "model_version",
+      "baseline_inputs",
+      "baseline_tier",
+      "applied_rules",
+      "final_tier",
+      "explanation",
+      "human_review_required"
+    ],
+    "requirements": [
+      "Preserve the matrix inputs and baseline result.",
+      "Identify every matched elevation rule, including rules that confirm an already-high tier.",
+      "Never infer missing required facts.",
+      "Never reduce inherent risk based on controls.",
+      "State that a qualified human owns the final decision."
+    ]
+  },
+  "model": {
+    "decision_type": "inherent_ai_system_risk",
+    "id": "ai-governance-inherent-risk",
+    "no_downward_adjustment": true,
+    "tier_order": [
+      "tier_1",
+      "tier_2",
+      "tier_3"
+    ],
+    "version": "0.1.0"
+  },
+  "required_inputs": [
+    "assessment_id",
+    "system_name",
+    "business_purpose",
+    "accountable_owner",
+    "autonomy_level",
+    "information_sensitivity",
+    "human_review",
+    "action_authority",
+    "system_access",
+    "agent_capabilities",
+    "external_reach",
+    "reversibility",
+    "decision_impact"
+  ]
+}

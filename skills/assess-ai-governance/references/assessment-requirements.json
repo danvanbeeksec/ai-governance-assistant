@@ -1,0 +1,135 @@
+{
+  "fields": [
+    {
+      "accepts_multiple": false,
+      "allowed_values": [],
+      "field": "system_name",
+      "question": "What is the AI system or use case called?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [],
+      "field": "business_purpose",
+      "question": "What business purpose will the AI system serve?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [],
+      "field": "accountable_owner",
+      "question": "Who is accountable for the AI system or use case?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "autonomous",
+        "conditionally_autonomous",
+        "human_supervised"
+      ],
+      "field": "autonomy_level",
+      "question": "How independently can the AI system act?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ],
+      "field": "information_sensitivity",
+      "question": "What is the highest sensitivity of information it can process?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "prior_to_each_meaningful_action",
+        "checkpoints_or_exceptions",
+        "no_prior_review"
+      ],
+      "field": "human_review",
+      "question": "When must a person review a meaningful action?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "generate_only",
+        "recommend",
+        "modify_nonproduction",
+        "modify_production",
+        "execute_material_transaction",
+        "safety_relevant_action"
+      ],
+      "field": "action_authority",
+      "question": "What is the most consequential action the system may take?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "none",
+        "standard",
+        "privileged"
+      ],
+      "field": "system_access",
+      "question": "What level of access does the system have to organizational systems?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "none",
+        "bounded",
+        "broad"
+      ],
+      "field": "external_reach",
+      "question": "How broadly can the system interact outside its immediate environment?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "easy",
+        "recoverable_with_effort",
+        "difficult"
+      ],
+      "field": "reversibility",
+      "question": "How difficult is it to reverse the system's material effects?",
+      "required": true
+    },
+    {
+      "accepts_multiple": false,
+      "allowed_values": [
+        "none",
+        "operational",
+        "consequential",
+        "regulated_or_consequential"
+      ],
+      "field": "decision_impact",
+      "question": "What is the highest potential impact of decisions it supports or makes?",
+      "required": true
+    },
+    {
+      "accepts_multiple": true,
+      "allowed_values": [
+        "external_tools",
+        "external_communication",
+        "delegation",
+        "persistent_memory"
+      ],
+      "field": "agent_capabilities",
+      "question": "Which agent capabilities are enabled, if any?",
+      "required": true
+    }
+  ],
+  "inference_policy": "The service never infers facts. A client may propose an inference with its basis, but the value is excluded until confirmed is true.",
+  "managed_fields": [
+    "assessment_id"
+  ],
+  "schema_version": "0.1.0"
+}

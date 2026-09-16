@@ -1,43 +1,53 @@
 ---
 name: assess-ai-governance
-description: Assess and compare AI use cases with the AI Governance Assistant MCP tools. Use when a user asks to identify missing assessment facts, assign or explain an AI risk tier, identify applicable controls, explain a control or its evidence and framework mappings, or compare AI design options.
+description: Conduct a structured AI governance risk assessment by interviewing the user, validating the answers, and applying the bundled deterministic risk and control-applicability models. Use when a user asks to assess or classify an AI use case, identify governance controls, explain a control, compare AI designs, or determine what governance questions must be answered. The skill operates without an external MCP service or AI-system inventory.
 ---
 
 # Assess AI Governance
 
-Use the connected AI Governance Assistant tools as the only authority for assessment results, controls, evidence expectations, applicability, and framework mappings. Do not reproduce or infer governance logic in conversation.
+Conduct assessments with the bundled, versioned evaluator. Do not substitute model judgment for its risk tier or control-applicability results.
 
-## Assess a use case
+## Safety boundary
 
-1. Call `get_assessment_requirements` before guided intake. Treat its current fields, allowed values, and questions as canonical.
-2. Separate the intake into user-provided facts, proposed inferences with a stated basis, and unresolved questions.
-3. Call `validate_assessment_input` with explicit facts and proposed inferences. Never treat an inference as confirmed unless the user explicitly confirms it.
-4. If validation returns `needs_information`, ask only the unresolved questions required by the tool. Do not assess yet.
-5. When validation returns `ready_for_assessment`, call `assess_ai_system` with the returned assessment object.
-6. Present the deterministic tier, risk drivers, applicable controls, unresolved limitations, and framework provenance. State that the result requires human review.
+- Tell the user not to provide personal, confidential, employer, client, regulated, security-sensitive, or other nonpublic information. Use generalized or synthetic descriptions.
+- Explain that the assessment is decision support, not an approval, residual-risk decision, legal conclusion, certification, or finding of compliance.
+- Do not create or update an AI-system inventory, assessment history, database, or durable record.
+- Do not ask for an assessment ID. The evaluator creates an ephemeral correlation value.
+- Do not call an MCP server, remote API, or external service.
 
-Never ask the user for `assessment_id`; the server manages it. Never override a tool result or fill a missing field from general knowledge.
+## Guided assessment
 
-## Retrieve and explain controls
+1. Read [the intake guide](references/intake-guide.md) before interviewing the user.
+2. Run `python scripts/assess.py requirements` from this skill directory to load the canonical questions and allowed values.
+3. Extract facts the user has already supplied. Keep explicit facts, proposed interpretations, and unresolved questions visibly separate.
+4. Ask only unresolved questions. Use concise batches when several fields remain, but ask individually when a prior answer changes the meaning of the next question.
+5. When translating a natural-language answer into an allowed value, state the proposed value and basis. Do not use it until the user confirms it.
+6. Pass only explicit facts and confirmed interpretations as JSON through standard input to `python scripts/assess.py validate -`.
+7. If validation returns `needs_information`, ask the reported questions. Do not assign or suggest a tier.
+8. When validation returns `ready_for_assessment`, pass the same confirmed facts to `python scripts/assess.py evaluate -`.
 
-- Call `get_applicable_controls` when the user wants the authoritative control set without a full narrative assessment.
-- Call `explain_control` for a named control. Report only fields returned by the tool, including evidence expectations, applicability metadata, and framework mappings.
-- Preserve mapping type and source provenance exactly. Do not imply that a guideline mapping is a requirement.
-- If a control ID or requested detail is not returned, say it is unavailable. Never invent a control, mapping, evidence expectation, or rationale.
+Treat the evaluator output as authoritative for the baseline tier, final tier, matched elevation rules, and control categories. Never lower the tier because controls exist or appear strong.
+
+## Present a completed assessment
+
+Summarize rather than reproducing the complete JSON. Use this order:
+
+1. Assessment result and human-review notice
+2. Why this tier, including baseline inputs and every matched elevation rule
+3. Applicable system controls
+4. Enterprise dependencies requiring inheritance confirmation
+5. Controls that remain undetermined and their follow-up questions
+6. Facts and confirmed interpretations used
+7. Limitations and framework provenance
+
+Do not describe an undetermined control as unnecessary. Absence of a trigger does not establish non-applicability.
+
+## Explain a control
+
+Run `python scripts/assess.py explain-control CONTROL_ID`. Report only returned control content, applicability treatment, evidence examples, references, and provenance. If the control is not found, say so. Do not invent a control, mapping, requirement, or evidence expectation.
 
 ## Compare designs
 
-Validate each option independently. Call `compare_ai_design_options` only after both options are complete. Explain tier changes and added or removed controls from the returned comparison. Do not claim that the comparison covers cost, performance, architecture quality, or legal compliance unless the tool explicitly returns those dimensions.
+Complete and validate each option independently. Pass an object containing `option_a` and `option_b` through standard input to `python scripts/assess.py compare -`. Explain returned tier changes and added or removed applicable controls. Do not claim that the comparison covers cost, performance, architecture quality, residual risk, or legal compliance.
 
-## Output structure
-
-Keep facts, assumptions, and open questions visibly distinct. For completed assessments, use:
-
-1. Assessment result
-2. Why this tier
-3. Applicable controls
-4. Facts and confirmed inferences
-5. Unresolved questions or limitations
-6. Framework provenance and human-review notice
-
-For realistic invocation and safety checks, read [evaluation scenarios](references/evaluation-scenarios.md). For installation and surface-specific limits, read [setup](references/setup.md).
+For realistic invocation and safety checks, read [evaluation scenarios](references/evaluation-scenarios.md). For installation, rebuilding, and version boundaries, read [setup](references/setup.md).
