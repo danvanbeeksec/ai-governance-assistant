@@ -3102,6 +3102,17 @@
       "title": "Vendor AI assurance and audit rights"
     }
   ],
+  "library": {
+    "description": "An independently authored enterprise AI control library covering organizational AI governance, workforce use, AI systems, models, platforms, agents, data, operations, and third parties. Each control includes structured, machine-readable applicability metadata. The metadata expresses control authority; consuming decision services evaluate submitted facts. Controls do not require an external-framework mapping to be valid.",
+    "limitations": [
+      "Does not establish legal compliance, certification, or standards conformity.",
+      "Requires organization-specific tailoring, ownership, testing, and approval.",
+      "Does not contain a risk-tier selection or recommendation engine."
+    ],
+    "name": "Independent AI Control Library",
+    "status": "draft",
+    "version": "1.2.0"
+  },
   "library_version": "1.2.0",
   "reference_catalog": {
     "AGENT-BASELINE-V1-DRAFT": "Agent Baseline v1.0-draft, source commit 8954684dd3221ae0613a55dabfc1b6bc10d23705",

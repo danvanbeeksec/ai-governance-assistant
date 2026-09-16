@@ -13,7 +13,7 @@ The repository includes `skills/assess-ai-governance`, a portable Agent Skill th
 - `references/package-manifest.json`: source provenance and resource digests.
 - `references/intake-guide.md`: plain-language interpretation guidance.
 
-The risk and control resources are exported from the Assistant's pinned Control Plane dependency. They are point-in-time release artifacts, not a new governance authority. The build fails closed at runtime if a resource digest is changed without rebuilding the manifest.
+The risk and control resources are exported from the Assistant's pinned Control Plane dependency. They are point-in-time release artifacts, not a new governance authority. The package preserves the framework library's lifecycle status as well as its version, source commit, and digest. The build fails closed at runtime if a resource digest is changed without rebuilding the manifest.
 
 ## Interaction model
 

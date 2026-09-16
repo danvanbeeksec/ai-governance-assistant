@@ -5,11 +5,14 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
 import tempfile
 import zipfile
+
+import yaml
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPOSITORY_ROOT / "src"))
@@ -37,9 +40,33 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _framework_document() -> dict[str, object]:
+    """Read library metadata from the same framework artifact used by the service."""
+    framework_value = os.getenv("AI_GOVERNANCE_FRAMEWORK")
+    workspace_value = os.getenv("AI_GOVERNANCE_WORKSPACE")
+    if framework_value:
+        content = Path(framework_value).expanduser().read_bytes()
+    elif workspace_value:
+        content = (
+            Path(workspace_value).expanduser()
+            / "ai-governance-control-framework"
+            / "data"
+            / "controls.yaml"
+        ).read_bytes()
+    else:
+        from ai_governance_control_framework import controls_bytes
+
+        content = controls_bytes()
+    document = yaml.safe_load(content)
+    if not isinstance(document, dict) or not isinstance(document.get("library"), dict):
+        raise ValueError("Control framework does not contain library metadata")
+    return document
+
+
 def export_resources(skill_path: Path) -> dict[str, object]:
     """Export validated policy data from the pinned Control Plane dependency."""
     service = build_service()
+    framework_document = _framework_document()
     references = skill_path / "references"
     references.mkdir(parents=True, exist_ok=True)
 
@@ -47,6 +74,7 @@ def export_resources(skill_path: Path) -> dict[str, object]:
     framework = {
         "schema_version": service.framework.source.schema_version,
         "library_version": service.framework.source.library_version,
+        "library": framework_document["library"],
         "reference_catalog": service.framework.reference_catalog,
         "controls": [
             control.model_dump(mode="json") for control in service.framework.controls
@@ -75,6 +103,7 @@ def export_resources(skill_path: Path) -> dict[str, object]:
             "status": service.methodology.methodology.status,
         },
         "framework_source": source,
+        "framework_library": framework_document["library"],
         "resource_sha256": {
             filename: _sha256(references / filename)
             for filename in RESOURCE_FILENAMES

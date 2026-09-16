@@ -38,7 +38,7 @@ Summarize rather than reproducing the complete JSON. Use this order:
 4. Enterprise dependencies requiring inheritance confirmation
 5. Controls that remain undetermined and their follow-up questions
 6. Facts and confirmed interpretations used
-7. Limitations and framework provenance
+7. Limitations and framework provenance, including the framework library lifecycle status
 
 Do not describe an undetermined control as unnecessary. Absence of a trigger does not establish non-applicability.
 
