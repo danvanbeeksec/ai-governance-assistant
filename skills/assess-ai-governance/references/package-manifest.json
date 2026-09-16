@@ -13,12 +13,12 @@
       "Does not contain a risk-tier selection or recommendation engine."
     ],
     "name": "Independent AI Control Library",
-    "status": "draft",
+    "status": "published",
     "version": "1.2.0"
   },
   "framework_source": {
-    "commit": "8c95890cb2baf298e460a9a24978503286bc6e2f",
-    "digest": "sha256:dd7f696df558302808e71a0fab74153f815b86fa923335806a791146d78fdcc6",
+    "commit": "26b810fad250fa785bbd470a32dba9e795933ed1",
+    "digest": "sha256:e01c880933b3385f6b8a490f867cd5d2627a97134eaad8fced2a15d4831eb510",
     "library_version": "1.2.0",
     "repository": "danvanbeeksec/ai-governance-control-framework",
     "schema_version": "2.1",
@@ -27,7 +27,7 @@
   "resource_sha256": {
     "assessment-requirements.json": "0f734eb05cef1c57c844206e977aa8d546ff4af4002c26ce9543e2041a7154a8",
     "control-applicability.json": "3fa039908914fc0cc2bb99b4b35dcd08372c76e596362de7dc15d389ec05c9fb",
-    "controls.json": "94063b2a596cfd20bc9963b6fa2f28bee398a1b7a114f0a6ad01277812e0fb02",
+    "controls.json": "cf7d1d191bbceedbe757d0d273611dee05aba514394c0688e2d3f7315b363ea3",
     "risk-model.json": "bd469c39232812e75ba266b4cdcf0e927b323975842df3a88892e9793f2dc86d"
   },
   "risk_model": {

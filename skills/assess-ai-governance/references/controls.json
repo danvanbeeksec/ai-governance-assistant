@@ -3110,7 +3110,7 @@
       "Does not contain a risk-tier selection or recommendation engine."
     ],
     "name": "Independent AI Control Library",
-    "status": "draft",
+    "status": "published",
     "version": "1.2.0"
   },
   "library_version": "1.2.0",

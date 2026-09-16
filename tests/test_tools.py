@@ -40,7 +40,7 @@ class FakeService:
 
 
 def test_tools_delegate_without_implementing_governance_logic():
-    assert __version__ == "0.4.0"
+    assert __version__ == "0.5.0"
     tools = GovernanceTools(FakeService(), assessment_id_factory=lambda: "ASM-TEST")
     assert tools.get_assessment_requirements()["fields"] == ["system_name"]
     assert tools.validate_assessment_input({"x": 1})["facts"] == {"x": 1}

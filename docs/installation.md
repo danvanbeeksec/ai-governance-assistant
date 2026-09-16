@@ -14,7 +14,7 @@ The Assistant supports three local access paths and one separately hosted MCP pa
 Install the released package and its Git-pinned dependencies in an isolated environment:
 
 ```bash
-pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.5.0"
 ```
 
 Confirm the command is available without starting the stdio server:
@@ -36,7 +36,7 @@ Do not type into the server process or send blank lines to it. Stdio accepts JSO
 Build the image:
 
 ```bash
-docker build -t ai-governance-assistant:0.4.0 .
+docker build -t ai-governance-assistant:0.5.0 .
 ```
 
 Start with `examples/mcp-config.docker.json`. The `-i` argument is required because MCP communicates through the container's standard input and output. Do not add `-t`, because terminal formatting can corrupt the protocol stream.
@@ -46,7 +46,7 @@ Start with `examples/mcp-config.docker.json`. The `-i` argument is required beca
 Install the Assistant and optional web dependency:
 
 ```bash
-pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.5.0"
 pipx inject ai-governance-assistant "streamlit>=1.41,<2"
 ai-governance-assistant-web
 ```
@@ -71,7 +71,7 @@ The equivalent container command is:
 ```bash
 docker run --rm -p 8000:8000 \
   -e AI_GOVERNANCE_API_KEY="replace-with-a-long-random-test-value" \
-  ai-governance-assistant:0.4.0 ai-governance-assistant-http
+  ai-governance-assistant:0.5.0 ai-governance-assistant-http
 ```
 
 See `docs/microsoft-365-copilot.md` for the hosted path.
@@ -99,7 +99,7 @@ For the web form:
 Upgrade a pipx installation to a new tag:
 
 ```bash
-pipx reinstall "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
+pipx reinstall "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.5.0"
 ```
 
 Remove it with:
@@ -111,5 +111,5 @@ pipx uninstall ai-governance-assistant
 Remove the local Docker image with:
 
 ```bash
-docker image rm ai-governance-assistant:0.4.0
+docker image rm ai-governance-assistant:0.5.0
 ```

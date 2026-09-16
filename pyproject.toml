@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-governance-assistant"
-version = "0.4.0"
+version = "0.5.0"
 description = "MCP interface for the reusable AI governance decision service"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,7 +13,7 @@ authors = [{ name = "Dan Van Beek" }]
 dependencies = [
   "mcp>=1.12,<2",
   "uvicorn>=0.30,<1",
-  "ai-governance-control-plane @ git+https://github.com/danvanbeeksec/ai-governance-control-plane.git@a6eae7a62dfde13c241bb620465e0b010f208518",
+  "ai-governance-control-plane @ git+https://github.com/danvanbeeksec/ai-governance-control-plane.git@86456eb1626ea71a8ba25fe9451dce9bb3b5557d",
 ]
 
 [project.optional-dependencies]

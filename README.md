@@ -17,7 +17,8 @@ Assessment execution tools accept the Control Plane's canonical structured asses
 
 | Assistant | Control Plane | Control Framework |
 | --- | --- | --- |
-| 0.4.0 | 0.6.0 | 1.2.0 |
+| 0.5.0 | 0.6.1 | 1.2.0 |
+| 0.4.0 | 0.6.0 | 1.2.0 draft |
 | 0.3.0 | 0.4.0 | 1.1.0 |
 | 0.2.0 | 0.4.0 | 1.1.0 |
 
@@ -30,7 +31,7 @@ The Assistant pins the reviewed Control Plane source commit, which in turn pins 
 This is the recommended option for an MCP client that supports local stdio servers. It has no hosted service or per-assessment charge.
 
 ```bash
-pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.5.0"
 ai-governance-assistant
 ```
 
@@ -39,7 +40,7 @@ Use [`examples/mcp-config.pipx.json`](examples/mcp-config.pipx.json) as a client
 ### Docker MCP server
 
 ```bash
-docker build -t ai-governance-assistant:0.4.0 .
+docker build -t ai-governance-assistant:0.5.0 .
 ```
 
 Use [`examples/mcp-config.docker.json`](examples/mcp-config.docker.json) to let an MCP client launch the container over stdio.
@@ -47,7 +48,7 @@ Use [`examples/mcp-config.docker.json`](examples/mcp-config.docker.json) to let 
 ### Local web demonstration without an LLM
 
 ```bash
-pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.4.0"
+pipx install "git+https://github.com/danvanbeeksec/ai-governance-assistant.git@v0.5.0"
 pipx inject ai-governance-assistant "streamlit>=1.41,<2"
 ai-governance-assistant-web
 ```
@@ -55,7 +56,7 @@ ai-governance-assistant-web
 Or run the web demonstration from Docker:
 
 ```bash
-docker run --rm -p 8501:8501 ai-governance-assistant:0.4.0 \
+docker run --rm -p 8501:8501 ai-governance-assistant:0.5.0 \
   ai-governance-assistant-web --server.address=0.0.0.0
 ```
 

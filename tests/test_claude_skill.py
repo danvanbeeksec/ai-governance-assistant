@@ -84,7 +84,7 @@ def test_manifest_verifies_every_exported_policy_resource() -> None:
     manifest = json.loads((references / "package-manifest.json").read_text())
     assert manifest["framework_source"]["library_version"] == "1.2.0"
     assert manifest["framework_source"]["status"] == "loaded"
-    assert manifest["framework_library"]["status"] == "draft"
+    assert manifest["framework_library"]["status"] == "published"
     assert manifest["applicability_methodology"]["status"] == "approved"
     for filename, expected in manifest["resource_sha256"].items():
         actual = hashlib.sha256((references / filename).read_bytes()).hexdigest()
