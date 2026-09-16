@@ -1,6 +1,6 @@
 # AI Governance Assistant
 
-Public MCP, local demonstration interface, and portable Claude skill for the AI Governance Control Plane. The runtime interfaces do not own controls, risk scoring, applicability rules, or governance decisions. The Claude skill contains versioned, integrity-checked snapshots exported from the pinned governance authorities so it can operate without a service connection.
+Public MCP, local demonstration interface, portable Claude skill, and tenant-neutral Microsoft 365 Copilot kit for the AI Governance Control Plane. The runtime interfaces do not own controls, risk scoring, applicability rules, or governance decisions. The self-contained distributions contain versioned, integrity-checked assets exported from the pinned governance authorities so they can operate without a service connection.
 
 ## Tools
 
@@ -82,6 +82,18 @@ The separate `ai-governance-assistant-http` command exposes the same tools at `/
 
 See [`docs/microsoft-365-copilot.md`](docs/microsoft-365-copilot.md) for deployment and Copilot Studio setup. The included Azure Container Apps example is a starting point, not a production authorization.
 
+### Self-contained Microsoft 365 Copilot solution kit
+
+The [`m365-copilot`](m365-copilot/README.md) transfer kit creates a Copilot Studio agent that uses an embedded control reference and generated Power Fx formulas. It requires no MCP server, Azure service, custom connector, inventory, or assessment database. The final Power Platform solution ZIP must be assembled and exported in a Microsoft tenant because Microsoft assigns environment-specific component identities.
+
+Build an offline transfer archive with:
+
+```bash
+python scripts/build_m365_copilot_package.py --zip dist/ai-governance-m365-transfer-kit.zip
+```
+
+Follow [`m365-copilot/tenant-build-runbook.md`](m365-copilot/tenant-build-runbook.md) on the M365-capable device. The kit includes agent instructions, an Adaptive Card, deterministic formulas, generated knowledge, synthetic acceptance scenarios, and an export checklist.
+
 ## Local development
 
 Install this package in a virtual environment, then run `ai-governance-assistant`. The default stdio transport is suitable for local MCP clients. Normal operation uses the Framework and Control Plane policy resources supplied by the pinned installed packages, so sibling repositories are not required.
@@ -90,10 +102,10 @@ For reviewed local development overrides, set `AI_GOVERNANCE_WORKSPACE` to a par
 
 Run tests with `python -m pytest`.
 
-The test suite launches both stdio and authenticated Streamable HTTP servers and exercises the tools through MCP client sessions. Public-safe synthetic fixtures cover guided intake, explicit inference confirmation, system-managed assessment IDs, four AI design contexts, deterministic results, framework provenance, control explanation, and design comparison. GitHub Actions runs the same acceptance journey and starts the HTTP container.
+The test suite launches both stdio and authenticated Streamable HTTP servers and exercises the tools through MCP client sessions. It also verifies the self-contained Claude and Microsoft 365 assets against the same policy snapshots and synthetic scenarios. Public-safe fixtures cover guided intake, explicit inference confirmation, system-managed assessment IDs, four AI design contexts, deterministic results, framework provenance, control explanation, and design comparison. GitHub Actions runs the same acceptance journey and starts the HTTP container.
 
 ## Safety and scope
 
 This foundation does not provide approvals, evidence management, inventory persistence, legal conclusions, or server-side natural-language inference. The Claude skill performs natural-language intake in the client but requires explicit confirmation before using an interpretation. Hosted MCP supports shared API-key authentication as an initial interoperability control, not as a complete production identity design. All assessment outputs require human review and preserve framework provenance.
 
-Use only fictional or synthetic information. See [`SECURITY.md`](SECURITY.md) for public-use boundaries and vulnerability reporting.
+Use only fictional or synthetic information. A tenant-local M365 design does not override Microsoft 365 conversation, audit, diagnostic, or retention settings. See [`SECURITY.md`](SECURITY.md) for public-use boundaries and vulnerability reporting.

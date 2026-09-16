@@ -1,4 +1,16 @@
-# Microsoft 365 Copilot connection
+# Microsoft 365 Copilot options
+
+This repository supports two distinct Microsoft 365 Copilot patterns.
+
+## Self-contained Copilot Studio solution kit
+
+Use [`../m365-copilot/README.md`](../m365-copilot/README.md) when the assessment must run inside Microsoft Copilot Studio without an external MCP server, Azure runtime, custom connector, inventory, or assessment database.
+
+The kit contains generated Power Fx formulas, an embedded control reference, agent instructions, a structured Adaptive Card, acceptance scenarios, and a tenant build and export runbook. Its final Power Platform solution ZIP must be assembled in a Microsoft tenant because Microsoft assigns environment-specific component identities.
+
+This is the recommended distribution for a public, bring-your-own-tenant release.
+
+## Hosted MCP connection
 
 Microsoft 365 Copilot can use the Assistant through an agent created in Copilot Studio. The Assistant exposes MCP Streamable HTTP at `/mcp`; the existing stdio command remains the local Codex path.
 

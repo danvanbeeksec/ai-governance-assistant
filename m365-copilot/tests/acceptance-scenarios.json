@@ -1,0 +1,65 @@
+{
+  "autonomous_agent": {
+    "accountable_owner": "Fictional Service Communications Lead",
+    "action_authority": "recommend",
+    "agent_capabilities": [
+      "external_communication",
+      "persistent_memory"
+    ],
+    "assessment_id": "ACC-AGENT",
+    "autonomy_level": "autonomous",
+    "business_purpose": "Publish synthetic service-status updates to a fictional public audience.",
+    "decision_impact": "operational",
+    "external_reach": "broad",
+    "human_review": "no_prior_review",
+    "information_sensitivity": "public",
+    "reversibility": "recoverable_with_effort",
+    "system_access": "standard",
+    "system_name": "Synthetic Public Communications Agent"
+  },
+  "customer_system": {
+    "accountable_owner": "Fictional Program Services Director",
+    "action_authority": "recommend",
+    "agent_capabilities": [],
+    "assessment_id": "ACC-CUSTOMER",
+    "autonomy_level": "conditionally_autonomous",
+    "business_purpose": "Recommend access to a fictional public program without prior outcome review.",
+    "decision_impact": "regulated_or_consequential",
+    "external_reach": "bounded",
+    "human_review": "no_prior_review",
+    "information_sensitivity": "internal",
+    "reversibility": "difficult",
+    "system_access": "standard",
+    "system_name": "Synthetic Customer AI System"
+  },
+  "internal_assistant": {
+    "accountable_owner": "Fictional Collaboration Services Manager",
+    "action_authority": "generate_only",
+    "agent_capabilities": [],
+    "assessment_id": "ACC-INTERNAL",
+    "autonomy_level": "human_supervised",
+    "business_purpose": "Summarize fictional internal meeting notes for employee review.",
+    "decision_impact": "operational",
+    "external_reach": "none",
+    "human_review": "prior_to_each_meaningful_action",
+    "information_sensitivity": "internal",
+    "reversibility": "easy",
+    "system_access": "none",
+    "system_name": "Synthetic Internal Assistant"
+  },
+  "vendor_platform": {
+    "accountable_owner": "Fictional Vendor Services Manager",
+    "action_authority": "recommend",
+    "agent_capabilities": [],
+    "assessment_id": "ACC-VENDOR",
+    "autonomy_level": "human_supervised",
+    "business_purpose": "Draft responses from fictional customer records for employee approval.",
+    "decision_impact": "operational",
+    "external_reach": "bounded",
+    "human_review": "prior_to_each_meaningful_action",
+    "information_sensitivity": "confidential",
+    "reversibility": "recoverable_with_effort",
+    "system_access": "standard",
+    "system_name": "Synthetic Vendor AI Platform"
+  }
+}

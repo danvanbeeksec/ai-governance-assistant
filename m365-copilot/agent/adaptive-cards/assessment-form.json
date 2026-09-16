@@ -1,0 +1,173 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "AI Governance Assessment",
+      "weight": "Bolder",
+      "size": "Large"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Use only generalized, fictional, synthetic, or public information. Do not provide personal, confidential, employer, client, regulated, security-sensitive, or other nonpublic information.",
+      "wrap": true,
+      "color": "Attention"
+    },
+    {
+      "type": "Input.Text",
+      "id": "system_name",
+      "label": "What is the AI system or use case called?",
+      "isRequired": true,
+      "errorMessage": "Enter a generalized or synthetic system name."
+    },
+    {
+      "type": "Input.Text",
+      "id": "business_purpose",
+      "label": "What business purpose will it serve?",
+      "isMultiline": true,
+      "isRequired": true,
+      "errorMessage": "Describe the business purpose."
+    },
+    {
+      "type": "Input.Text",
+      "id": "accountable_owner",
+      "label": "Who is accountable for the use case?",
+      "isRequired": true,
+      "errorMessage": "Enter a generalized role or owner."
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "autonomy_level",
+      "label": "How independently can it act?",
+      "style": "expanded",
+      "isRequired": true,
+      "choices": [
+        { "title": "Human supervised: review before each meaningful action", "value": "human_supervised" },
+        { "title": "Conditionally autonomous: acts within boundaries or checkpoints", "value": "conditionally_autonomous" },
+        { "title": "Autonomous: acts without routine prior approval", "value": "autonomous" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "information_sensitivity",
+      "label": "What is the highest information sensitivity?",
+      "style": "compact",
+      "isRequired": true,
+      "choices": [
+        { "title": "Public", "value": "public" },
+        { "title": "Internal", "value": "internal" },
+        { "title": "Confidential", "value": "confidential" },
+        { "title": "Restricted", "value": "restricted" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "human_review",
+      "label": "When must a person review a meaningful action?",
+      "style": "compact",
+      "isRequired": true,
+      "choices": [
+        { "title": "Before each meaningful action", "value": "prior_to_each_meaningful_action" },
+        { "title": "At checkpoints or exceptions", "value": "checkpoints_or_exceptions" },
+        { "title": "No prior review", "value": "no_prior_review" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "action_authority",
+      "label": "What is the most consequential action it may take?",
+      "style": "compact",
+      "isRequired": true,
+      "choices": [
+        { "title": "Generate content or analysis only", "value": "generate_only" },
+        { "title": "Recommend a decision or action", "value": "recommend" },
+        { "title": "Modify a nonproduction environment", "value": "modify_nonproduction" },
+        { "title": "Modify a production system or record", "value": "modify_production" },
+        { "title": "Execute a material transaction", "value": "execute_material_transaction" },
+        { "title": "Take a safety-relevant action", "value": "safety_relevant_action" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "system_access",
+      "label": "What level of organizational system access does it have?",
+      "style": "compact",
+      "isRequired": true,
+      "choices": [
+        { "title": "None", "value": "none" },
+        { "title": "Standard", "value": "standard" },
+        { "title": "Privileged", "value": "privileged" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "external_reach",
+      "label": "How broadly can it interact outside its immediate environment?",
+      "style": "compact",
+      "isRequired": true,
+      "choices": [
+        { "title": "None", "value": "none" },
+        { "title": "Bounded", "value": "bounded" },
+        { "title": "Broad or public", "value": "broad" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "reversibility",
+      "label": "How difficult is it to reverse material effects?",
+      "style": "compact",
+      "isRequired": true,
+      "choices": [
+        { "title": "Easy", "value": "easy" },
+        { "title": "Recoverable with effort", "value": "recoverable_with_effort" },
+        { "title": "Difficult", "value": "difficult" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "decision_impact",
+      "label": "What is the highest potential decision impact?",
+      "style": "compact",
+      "isRequired": true,
+      "choices": [
+        { "title": "None", "value": "none" },
+        { "title": "Operational", "value": "operational" },
+        { "title": "Consequential", "value": "consequential" },
+        { "title": "Regulated or comparably consequential", "value": "regulated_or_consequential" }
+      ]
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "agent_capabilities",
+      "label": "Which agent capabilities are enabled? Leave blank only when none apply.",
+      "isMultiSelect": true,
+      "style": "expanded",
+      "choices": [
+        { "title": "External tools, APIs, code, plugins, or services", "value": "external_tools" },
+        { "title": "External communication or publishing", "value": "external_communication" },
+        { "title": "Delegation to another AI system or agent", "value": "delegation" },
+        { "title": "Persistent or cross-session memory", "value": "persistent_memory" }
+      ]
+    },
+    {
+      "type": "Input.Toggle",
+      "id": "confirmed",
+      "title": "I confirm these values describe the proposed design and that I used no sensitive or nonpublic information.",
+      "valueOn": "true",
+      "valueOff": "false",
+      "isRequired": true,
+      "errorMessage": "Confirm the assessment inputs before continuing."
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Run assessment",
+      "data": {
+        "action": "run_ai_governance_assessment"
+      }
+    }
+  ]
+}

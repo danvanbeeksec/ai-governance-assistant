@@ -1,0 +1,51 @@
+{
+  "applicability_methodology": {
+    "id": "ai-control-applicability",
+    "status": "approved",
+    "version": "1.0.0"
+  },
+  "assessment_schema_version": "0.1.0",
+  "external_runtime_required": false,
+  "framework_library": {
+    "description": "An independently authored enterprise AI control library covering organizational AI governance, workforce use, AI systems, models, platforms, agents, data, operations, and third parties. Each control includes structured, machine-readable applicability metadata. The metadata expresses control authority; consuming decision services evaluate submitted facts. Controls do not require an external-framework mapping to be valid.",
+    "limitations": [
+      "Does not establish legal compliance, certification, or standards conformity.",
+      "Requires organization-specific tailoring, ownership, testing, and approval.",
+      "Does not contain a risk-tier selection or recommendation engine."
+    ],
+    "name": "Independent AI Control Library",
+    "status": "published",
+    "version": "1.2.0"
+  },
+  "framework_source": {
+    "commit": "26b810fad250fa785bbd470a32dba9e795933ed1",
+    "digest": "sha256:e01c880933b3385f6b8a490f867cd5d2627a97134eaad8fced2a15d4831eb510",
+    "library_version": "1.2.0",
+    "repository": "danvanbeeksec/ai-governance-control-framework",
+    "schema_version": "2.1",
+    "status": "loaded"
+  },
+  "generated_file_sha256": {
+    "knowledge/control-catalog.txt": "a1009c668d76d5d27457f981330cfc3c1fc7d21de9855d71d1d9def709fc074f",
+    "tests/acceptance-scenarios.json": "303c875b9083d9d05736c9ec46516af248949c1ed360ce80b6cd5f697c7e45ea",
+    "workflow/assessment-engine.json": "7f85687a4f1c213b6a5469bfdd26db3d3edaa708f2e92c5d14c1d717b209c071",
+    "workflow/power-fx/baseline-tier.fx": "848b40aeff8fa980cc9599d7bad1094095469f9e7628da45ddb5d630d80832eb",
+    "workflow/power-fx/control-outcomes.fx": "a234872c6b4646ab64fe0ad71a7ea9f7597f599cb78efe9c7b2adeb8d08720a8",
+    "workflow/power-fx/final-tier.fx": "4d97c0fe5616dff87f01c63b0e6b9d9e116cfe946c9f6e9d18d84a6b0977f9ee",
+    "workflow/power-fx/matched-elevation-rules.fx": "fd5df88d36b1ba72e6bb5d6f62a4e9c0439ca3fb342d4278f1e5a42ac2aa65bf",
+    "workflow/power-fx/report-fields.fx": "610e4af4e668fbc1bcf5b6ba9c83188bda42459e54e1e245ac6ea0045e2f1f8c"
+  },
+  "inventory_persistence": false,
+  "m365_package_version": "0.1.0",
+  "risk_model": {
+    "id": "ai-governance-inherent-risk",
+    "version": "0.1.0"
+  },
+  "runtime": "Microsoft Copilot Studio",
+  "source_resource_sha256": {
+    "assessment-requirements.json": "0f734eb05cef1c57c844206e977aa8d546ff4af4002c26ce9543e2041a7154a8",
+    "control-applicability.json": "3fa039908914fc0cc2bb99b4b35dcd08372c76e596362de7dc15d389ec05c9fb",
+    "controls.json": "cf7d1d191bbceedbe757d0d273611dee05aba514394c0688e2d3f7315b363ea3",
+    "risk-model.json": "bd469c39232812e75ba266b4cdcf0e927b323975842df3a88892e9793f2dc86d"
+  }
+}
