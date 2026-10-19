@@ -17,7 +17,7 @@ properties:
   template:
     containers:
       - name: ai-governance-assistant
-        image: <registry>/<image>:0.4.0
+        image: <registry>/<image>@sha256:<reviewed-image-digest>
         command:
           - ai-governance-assistant-http
         env:

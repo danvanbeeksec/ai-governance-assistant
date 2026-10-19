@@ -17,7 +17,7 @@
     "version": "1.2.0"
   },
   "framework_source": {
-    "commit": "26b810fad250fa785bbd470a32dba9e795933ed1",
+    "commit": "9f400a150396b79b1624660c111bcfd89a0d902c",
     "digest": "sha256:e01c880933b3385f6b8a490f867cd5d2627a97134eaad8fced2a15d4831eb510",
     "library_version": "1.2.0",
     "repository": "danvanbeeksec/ai-governance-control-framework",
@@ -25,7 +25,7 @@
     "status": "loaded"
   },
   "resource_sha256": {
-    "assessment-requirements.json": "0f734eb05cef1c57c844206e977aa8d546ff4af4002c26ce9543e2041a7154a8",
+    "assessment-requirements.json": "7b3a022bcc0d9179738b479edcf5a50e4650549bc12c598a16d1e473b12ced43",
     "control-applicability.json": "3fa039908914fc0cc2bb99b4b35dcd08372c76e596362de7dc15d389ec05c9fb",
     "controls.json": "cf7d1d191bbceedbe757d0d273611dee05aba514394c0688e2d3f7315b363ea3",
     "risk-model.json": "bd469c39232812e75ba266b4cdcf0e927b323975842df3a88892e9793f2dc86d"
@@ -34,5 +34,5 @@
     "id": "ai-governance-inherent-risk",
     "version": "0.1.0"
   },
-  "skill_package_version": "0.1.0"
+  "skill_package_version": "0.2.0"
 }

@@ -91,7 +91,7 @@ def export_resources(skill_path: Path) -> dict[str, object]:
 
     source = service.framework.source.model_dump(mode="json")
     manifest: dict[str, object] = {
-        "skill_package_version": "0.1.0",
+        "skill_package_version": "0.2.0",
         "assessment_schema_version": requirements["schema_version"],
         "risk_model": {
             "id": service.risk_model["model"]["id"],
