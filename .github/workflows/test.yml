@@ -11,24 +11,33 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python: ["3.10", "3.12", "3.14"]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
           cache: pip
       - name: Install package and pinned dependencies
-        run: python -m pip install -r requirements-dev.txt
+        run: python -m pip install -r requirements-dev.txt uv==0.13.1
+      - name: Verify deployment lock export
+        run: python scripts/lock_dependencies.py --check
       - name: Run tests
         run: python -m pytest
       - name: Compile Python sources
         run: python -m compileall -q src
       - name: Build installable Assistant wheel
         run: python -m pip wheel . --no-deps --wheel-dir dist
+      - name: Build portable candidate skill
+        run: python scripts/build_claude_skill.py --zip dist/assess-ai-governance.zip
       - name: Build local distribution image
+        if: matrix.python == '3.12'
         run: docker build -t ai-governance-assistant:test .
       - name: Verify hosted HTTP container
+        if: matrix.python == '3.12'
         env:
           AI_GOVERNANCE_API_KEY: synthetic-ci-api-key
         run: |

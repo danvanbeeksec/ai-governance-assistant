@@ -6,6 +6,9 @@ from typing import Any
 
 from ai_governance_assistant.config import build_service
 from ai_governance_assistant.web_launcher import format_tier
+from ai_governance_assistant.tools import generate_assessment_id
+from ai_governance_control_plane.reporting import review_brief
+from ai_governance_control_plane.summarize import tier_display
 
 
 LABELS = {
@@ -67,7 +70,7 @@ def render() -> None:
             elif field == "business_purpose":
                 facts[field] = st.text_area(label, help=requirement.question)
             else:
-                default = "SYNTHETIC-001" if field == "assessment_id" else ""
+                default = ""
                 facts[field] = st.text_input(
                     label, value=default, help=requirement.question
                 )
@@ -82,7 +85,8 @@ def render() -> None:
         for key, value in facts.items()
         if value not in (None, "")
     }
-    validation = service.validate_assessment_input(facts)
+    assessment_id = st.session_state.setdefault("assessment_id", generate_assessment_id())
+    validation = service.validate_assessment_input(facts, managed_facts={"assessment_id": assessment_id})
     if validation.assessment is None:
         st.warning("More information is required before assessment.")
         for issue in validation.issues:
@@ -93,7 +97,7 @@ def render() -> None:
     result = service.assess_ai_system(validation.assessment)
     decision = result.decision
     col1, col2, col3 = st.columns(3)
-    col1.metric("Final tier", format_tier(decision.final_tier))
+    col1.metric("Final tier", tier_display(decision.final_tier))
     col2.metric(
         "Applicable controls",
         result.recommendations.summary.applicable_system_controls,
@@ -116,6 +120,18 @@ def render() -> None:
     ]
     st.dataframe(rows, width="stretch", hide_index=True)
 
+    st.subheader("Controls requiring an applicability decision")
+    for item in result.recommendations.undetermined_system_controls:
+        with st.expander(f"{item.control.control_id}: {item.control.title}"):
+            st.write(item.rationale)
+            for question in item.unresolved_questions:
+                st.write(question)
+    st.subheader("Enterprise inheritance questions")
+    for item in result.recommendations.enterprise_dependencies:
+        with st.expander(f"{item.control.control_id}: {item.control.title}"):
+            for question in item.unresolved_questions:
+                st.write(question)
+    st.download_button("Download review brief", review_brief(result), f"{assessment_id}-review.md", "text/markdown")
     with st.expander("Framework provenance"):
         st.json(decision.framework_source.model_dump(mode="json"))
     with st.expander("Structured result"):

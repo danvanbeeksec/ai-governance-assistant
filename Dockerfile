@@ -1,13 +1,14 @@
-FROM python:3.12-slim AS builder
+ARG PYTHON_IMAGE=python:3.12-slim
+FROM ${PYTHON_IMAGE} AS builder
 
 WORKDIR /app
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends git \
     && rm -rf /var/lib/apt/lists/*
 COPY . /app
-RUN python -m pip install --no-cache-dir --prefix=/install ".[web]"
+RUN python -m pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-FROM python:3.12-slim
+FROM ${PYTHON_IMAGE}
 
 COPY --from=builder /install /usr/local
 

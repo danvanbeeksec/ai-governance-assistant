@@ -56,3 +56,7 @@ Copy the skill folder to `.claude/skills/assess-ai-governance/` for a project or
 Rebuild and retest the ZIP whenever the assessment contract, risk model, applicability methodology, or control framework changes. The skill package is not automatically updated when a source repository changes.
 
 Do not submit personal, confidential, employer, client, regulated, security-sensitive, or other nonpublic information unless the intended Claude deployment and its retention settings have been separately approved. The result is decision support and does not establish approval, residual risk, legal compliance, certification, or evidence sufficiency.
+
+## Candidate 0.2.0
+
+The candidate exports the canonical input schema and tests accepted and rejected boundary values plus rule combinations against Control Plane 0.7.0. Build the candidate ZIP from this reviewed checkout. The previously published skill remains 0.1.0 until release approval and tagging. Hosted Claude conversations have not been validated by the repository tests.

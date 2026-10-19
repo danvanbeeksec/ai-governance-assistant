@@ -3,6 +3,12 @@
     {
       "accepts_multiple": false,
       "allowed_values": [],
+      "constraints": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
       "field": "system_name",
       "question": "What is the AI system or use case called?",
       "required": true
@@ -10,6 +16,12 @@
     {
       "accepts_multiple": false,
       "allowed_values": [],
+      "constraints": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
       "field": "business_purpose",
       "question": "What business purpose will the AI system serve?",
       "required": true
@@ -17,6 +29,12 @@
     {
       "accepts_multiple": false,
       "allowed_values": [],
+      "constraints": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
       "field": "accountable_owner",
       "question": "Who is accountable for the AI system or use case?",
       "required": true
@@ -28,6 +46,14 @@
         "conditionally_autonomous",
         "human_supervised"
       ],
+      "constraints": {
+        "enum": [
+          "autonomous",
+          "conditionally_autonomous",
+          "human_supervised"
+        ],
+        "type": "string"
+      },
       "field": "autonomy_level",
       "question": "How independently can the AI system act?",
       "required": true
@@ -40,6 +66,15 @@
         "confidential",
         "restricted"
       ],
+      "constraints": {
+        "enum": [
+          "public",
+          "internal",
+          "confidential",
+          "restricted"
+        ],
+        "type": "string"
+      },
       "field": "information_sensitivity",
       "question": "What is the highest sensitivity of information it can process?",
       "required": true
@@ -51,6 +86,14 @@
         "checkpoints_or_exceptions",
         "no_prior_review"
       ],
+      "constraints": {
+        "enum": [
+          "prior_to_each_meaningful_action",
+          "checkpoints_or_exceptions",
+          "no_prior_review"
+        ],
+        "type": "string"
+      },
       "field": "human_review",
       "question": "When must a person review a meaningful action?",
       "required": true
@@ -65,6 +108,17 @@
         "execute_material_transaction",
         "safety_relevant_action"
       ],
+      "constraints": {
+        "enum": [
+          "generate_only",
+          "recommend",
+          "modify_nonproduction",
+          "modify_production",
+          "execute_material_transaction",
+          "safety_relevant_action"
+        ],
+        "type": "string"
+      },
       "field": "action_authority",
       "question": "What is the most consequential action the system may take?",
       "required": true
@@ -76,6 +130,14 @@
         "standard",
         "privileged"
       ],
+      "constraints": {
+        "enum": [
+          "none",
+          "standard",
+          "privileged"
+        ],
+        "type": "string"
+      },
       "field": "system_access",
       "question": "What level of access does the system have to organizational systems?",
       "required": true
@@ -87,6 +149,14 @@
         "bounded",
         "broad"
       ],
+      "constraints": {
+        "enum": [
+          "none",
+          "bounded",
+          "broad"
+        ],
+        "type": "string"
+      },
       "field": "external_reach",
       "question": "How broadly can the system interact outside its immediate environment?",
       "required": true
@@ -98,6 +168,14 @@
         "recoverable_with_effort",
         "difficult"
       ],
+      "constraints": {
+        "enum": [
+          "easy",
+          "recoverable_with_effort",
+          "difficult"
+        ],
+        "type": "string"
+      },
       "field": "reversibility",
       "question": "How difficult is it to reverse the system's material effects?",
       "required": true
@@ -110,6 +188,15 @@
         "consequential",
         "regulated_or_consequential"
       ],
+      "constraints": {
+        "enum": [
+          "none",
+          "operational",
+          "consequential",
+          "regulated_or_consequential"
+        ],
+        "type": "string"
+      },
       "field": "decision_impact",
       "question": "What is the highest potential impact of decisions it supports or makes?",
       "required": true
@@ -122,12 +209,173 @@
         "delegation",
         "persistent_memory"
       ],
+      "constraints": {
+        "items": {
+          "enum": [
+            "external_tools",
+            "external_communication",
+            "delegation",
+            "persistent_memory"
+          ],
+          "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+      },
       "field": "agent_capabilities",
       "question": "Which agent capabilities are enabled, if any?",
       "required": true
     }
   ],
   "inference_policy": "The service never infers facts. A client may propose an inference with its basis, but the value is excluded until confirmed is true.",
+  "input_schema": {
+    "additionalProperties": false,
+    "description": "Canonical executable assessment input.",
+    "properties": {
+      "accountable_owner": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "\\S",
+        "title": "Accountable Owner",
+        "type": "string"
+      },
+      "action_authority": {
+        "enum": [
+          "generate_only",
+          "recommend",
+          "modify_nonproduction",
+          "modify_production",
+          "execute_material_transaction",
+          "safety_relevant_action"
+        ],
+        "title": "Action Authority",
+        "type": "string"
+      },
+      "agent_capabilities": {
+        "items": {
+          "enum": [
+            "external_tools",
+            "external_communication",
+            "delegation",
+            "persistent_memory"
+          ],
+          "type": "string"
+        },
+        "title": "Agent Capabilities",
+        "type": "array",
+        "uniqueItems": true
+      },
+      "assessment_id": {
+        "maxLength": 100,
+        "minLength": 1,
+        "pattern": "\\S",
+        "title": "Assessment Id",
+        "type": "string"
+      },
+      "autonomy_level": {
+        "enum": [
+          "autonomous",
+          "conditionally_autonomous",
+          "human_supervised"
+        ],
+        "title": "Autonomy Level",
+        "type": "string"
+      },
+      "business_purpose": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "pattern": "\\S",
+        "title": "Business Purpose",
+        "type": "string"
+      },
+      "decision_impact": {
+        "enum": [
+          "none",
+          "operational",
+          "consequential",
+          "regulated_or_consequential"
+        ],
+        "title": "Decision Impact",
+        "type": "string"
+      },
+      "external_reach": {
+        "enum": [
+          "none",
+          "bounded",
+          "broad"
+        ],
+        "title": "External Reach",
+        "type": "string"
+      },
+      "human_review": {
+        "enum": [
+          "prior_to_each_meaningful_action",
+          "checkpoints_or_exceptions",
+          "no_prior_review"
+        ],
+        "title": "Human Review",
+        "type": "string"
+      },
+      "information_sensitivity": {
+        "enum": [
+          "public",
+          "internal",
+          "confidential",
+          "restricted"
+        ],
+        "title": "Information Sensitivity",
+        "type": "string"
+      },
+      "reversibility": {
+        "enum": [
+          "easy",
+          "recoverable_with_effort",
+          "difficult"
+        ],
+        "title": "Reversibility",
+        "type": "string"
+      },
+      "schema_version": {
+        "const": "0.1.0",
+        "default": "0.1.0",
+        "title": "Schema Version",
+        "type": "string"
+      },
+      "system_access": {
+        "enum": [
+          "none",
+          "standard",
+          "privileged"
+        ],
+        "title": "System Access",
+        "type": "string"
+      },
+      "system_name": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "\\S",
+        "title": "System Name",
+        "type": "string"
+      }
+    },
+    "required": [
+      "assessment_id",
+      "system_name",
+      "business_purpose",
+      "accountable_owner",
+      "autonomy_level",
+      "information_sensitivity",
+      "human_review",
+      "action_authority",
+      "system_access",
+      "external_reach",
+      "reversibility",
+      "decision_impact",
+      "agent_capabilities"
+    ],
+    "title": "Assessment",
+    "type": "object"
+  },
   "managed_fields": [
     "assessment_id"
   ],

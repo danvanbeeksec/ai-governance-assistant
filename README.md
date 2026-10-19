@@ -2,6 +2,19 @@
 
 Public MCP, local demonstration interface, and portable Claude skill for the AI Governance Control Plane. The runtime interfaces do not own controls, risk scoring, applicability rules, or governance decisions. The Claude skill contains versioned, integrity-checked snapshots exported from the pinned governance authorities so it can operate without a service connection.
 
+## Start here
+
+Use the [Control Plane](https://github.com/danvanbeeksec/ai-governance-control-plane) for the main interactive demonstration and the [Framework](https://github.com/danvanbeeksec/ai-governance-control-framework) for reusable controls. This repository supplies alternate interfaces to the same decision service.
+
+| Your goal | Access path | Verification boundary |
+| --- | --- | --- |
+| Use an MCP client locally | Local stdio | Automated MCP client-session acceptance tests |
+| Try a form without an LLM | Local web demonstration | Complete synthetic form journey |
+| Use a portable package | Claude skill ZIP | Deterministic evaluator parity, not a claim about hosted Claude conversations |
+| Connect a hosted client | HTTP deployment template | Automated HTTP tests; tenant configuration still requires its own validation |
+
+Candidate 0.6.0 adds canonical validation parity and repairs web assessment completion. Review the candidate from this checkout with `pipx install '.[web]'`. Tagged commands below continue to identify the prior published release until this candidate is approved and tagged.
+
 ## Tools
 
 - `get_assessment_requirements`: return canonical intake fields, allowed values, and questions.
@@ -17,6 +30,7 @@ Assessment execution tools accept the Control Plane's canonical structured asses
 
 | Assistant | Control Plane | Control Framework |
 | --- | --- | --- |
+| 0.6.0 candidate | 0.7.0 candidate | 1.2.0 library / 1.2.1 package candidate |
 | 0.5.0 | 0.6.1 | 1.2.0 |
 | 0.4.0 | 0.6.0 | 1.2.0 draft |
 | 0.3.0 | 0.4.0 | 1.1.0 |
@@ -40,7 +54,7 @@ Use [`examples/mcp-config.pipx.json`](examples/mcp-config.pipx.json) as a client
 ### Docker MCP server
 
 ```bash
-docker build -t ai-governance-assistant:0.5.0 .
+docker build -t ai-governance-assistant:0.6.0-candidate .
 ```
 
 Use [`examples/mcp-config.docker.json`](examples/mcp-config.docker.json) to let an MCP client launch the container over stdio.
@@ -56,7 +70,7 @@ ai-governance-assistant-web
 Or run the web demonstration from Docker:
 
 ```bash
-docker run --rm -p 8501:8501 ai-governance-assistant:0.5.0 \
+docker run --rm -p 8501:8501 ai-governance-assistant:0.6.0-candidate \
   ai-governance-assistant-web --server.address=0.0.0.0
 ```
 
@@ -97,3 +111,11 @@ The test suite launches both stdio and authenticated Streamable HTTP servers and
 This foundation does not provide approvals, evidence management, inventory persistence, legal conclusions, or server-side natural-language inference. The Claude skill performs natural-language intake in the client but requires explicit confirmation before using an interpretation. Hosted MCP supports shared API-key authentication as an initial interoperability control, not as a complete production identity design. All assessment outputs require human review and preserve framework provenance.
 
 Use only fictional or synthetic information. See [`SECURITY.md`](SECURITY.md) for public-use boundaries and vulnerability reporting.
+
+## Reproducible candidate validation
+
+Runtime requirements are generated from package metadata and `deployment/uv.lock`. Install `uv` and run `python scripts/lock_dependencies.py` to update the resolution, or add `--check` to verify the export. Review the lock, generated portable resources, compatibility table, and changelog together.
+
+The web interface generates a managed assessment ID and returns pending applicability and inheritance questions alongside the result. It also exports a review brief. The portable evaluator enforces the canonical exported input schema, including lengths, types, enumeration values, and unique arrays.
+
+Client-server acceptance tests are not evidence of a live Copilot tenant connection or a hosted Claude conversation. Record those separately in their actual environments.

@@ -13,6 +13,8 @@ import sys
 from ai_governance_assistant.config import build_service
 import pytest
 import yaml
+import importlib.util
+from itertools import product
 
 
 ROOT = Path(__file__).parents[1]
@@ -190,3 +192,43 @@ def test_resource_tampering_fails_closed(tmp_path: Path) -> None:
     assert completed.returncode == 2
     assert result["status"] == "error"
     assert "digest mismatch" in result["error"]
+
+
+def portable():
+    spec = importlib.util.spec_from_file_location('portable_assessment', SCRIPT)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module, module.load_policy()
+
+
+@pytest.mark.parametrize('field,value', [
+    ('system_name', 'x'*200), ('system_name', 'x'*201),
+    ('assessment_id', 'x'*100), ('assessment_id', 'x'*101),
+    ('business_purpose', 'x'*2000), ('business_purpose', 'x'*2001),
+    ('accountable_owner', ' '), ('system_name', 42),
+    ('agent_capabilities', [{}]), ('agent_capabilities', ['external_tools', 'external_tools']),
+    ('agent_capabilities', 'external_tools'), ('information_sensitivity', 'unknown'),
+    ('external_reach', None), ('schema_version', 'future'),
+])
+def test_portable_and_service_agree_on_input_boundaries(field, value):
+    module, policy = portable()
+    facts = {**SCENARIOS['internal_assistant'], field: value}
+    actual = module.validate_assessment(facts, policy)
+    expected = build_service().validate_assessment_input(facts)
+    assert (actual['assessment'] is not None) == (expected.assessment is not None)
+
+
+def test_rule_combinations_match_the_canonical_service():
+    module, policy = portable()
+    service = build_service()
+    for autonomy, sensitivity, review in product(policy['risk_model']['enums']['autonomy_level'],
+                                                 policy['risk_model']['enums']['information_sensitivity'],
+                                                 policy['risk_model']['enums']['human_review']):
+        facts = {**SCENARIOS['autonomous_agent'], 'autonomy_level': autonomy,
+                 'information_sensitivity': sensitivity, 'human_review': review}
+        actual = module.evaluate_assessment(facts, policy)
+        expected = service.assess_ai_system(facts)
+        assert actual['decision']['final_tier'] == expected.decision.final_tier
+        assert [r['rule_id'] for r in actual['decision']['applied_rules']] == [r.rule_id for r in expected.decision.applied_rules]
+        assert actual['recommendations']['summary'] == expected.recommendations.summary.model_dump()
+        assert {item['control_id'] for item in actual['recommendations']['applicable_system_controls']} == {item.control.control_id for item in expected.recommendations.applicable_system_controls}

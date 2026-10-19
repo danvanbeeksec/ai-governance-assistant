@@ -36,7 +36,7 @@ Do not type into the server process or send blank lines to it. Stdio accepts JSO
 Build the image:
 
 ```bash
-docker build -t ai-governance-assistant:0.5.0 .
+docker build -t ai-governance-assistant:0.6.0-candidate .
 ```
 
 Start with `examples/mcp-config.docker.json`. The `-i` argument is required because MCP communicates through the container's standard input and output. Do not add `-t`, because terminal formatting can corrupt the protocol stream.
@@ -71,7 +71,7 @@ The equivalent container command is:
 ```bash
 docker run --rm -p 8000:8000 \
   -e AI_GOVERNANCE_API_KEY="replace-with-a-long-random-test-value" \
-  ai-governance-assistant:0.5.0 ai-governance-assistant-http
+  ai-governance-assistant:0.6.0-candidate ai-governance-assistant-http
 ```
 
 See `docs/microsoft-365-copilot.md` for the hosted path.
@@ -111,5 +111,11 @@ pipx uninstall ai-governance-assistant
 Remove the local Docker image with:
 
 ```bash
-docker image rm ai-governance-assistant:0.5.0
+docker image rm ai-governance-assistant:0.6.0-candidate
 ```
+
+## Candidate builds
+
+For the current candidate, install from the reviewed checkout with `pipx install '.[web]'` or `python -m pip install -r requirements.txt`. The tagged commands above remain the previous published release until candidate review and release tagging are complete. Build this checkout as `ai-governance-assistant:0.6.0-candidate` to avoid relabeling it as the old release.
+
+Docker accepts a `PYTHON_IMAGE` build argument. For an immutable release build, pass a reviewed official Python 3.12 image digest, then record the resulting application digest in the Azure template. The default development base remains `python:3.12-slim`. No image has been published by these instructions.

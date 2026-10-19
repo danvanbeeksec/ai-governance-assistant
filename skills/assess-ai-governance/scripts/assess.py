@@ -8,6 +8,7 @@ from copy import deepcopy
 import hashlib
 import hmac
 import json
+import re
 from pathlib import Path
 import sys
 from typing import Any
@@ -104,6 +105,34 @@ def _issue(
     return result
 
 
+def _validate_value(value: Any, schema: dict[str, Any]) -> str | None:
+    """Enforce the emitted canonical JSON contract without third-party dependencies."""
+    if "const" in schema and value != schema["const"]:
+        return "The value does not match the canonical contract."
+    if "enum" in schema and value not in schema["enum"]:
+        return "Select a supported value."
+    kind = schema.get("type")
+    if kind == "string":
+        if not isinstance(value, str):
+            return "Provide a text value."
+        if len(value) < schema.get("minLength", 0) or len(value) > schema.get("maxLength", len(value)):
+            return "Text length is outside the supported range."
+        if "pattern" in schema and re.search(schema["pattern"], value) is None:
+            return "Provide a non-empty text value."
+    elif kind == "array":
+        if not isinstance(value, list):
+            return "Provide a JSON array."
+        for item in value:
+            error = _validate_value(item, schema["items"])
+            if error:
+                return error
+        if schema.get("uniqueItems") and any(item in value[:index] for index, item in enumerate(value)):
+            return "Values must not be duplicated."
+    elif kind is not None:
+        raise SkillAssessmentError(f"Unsupported input schema type: {kind}")
+    return None
+
+
 def validate_assessment(
     raw_facts: Any, policy: dict[str, Any], *, assign_id: bool = False
 ) -> dict[str, Any]:
@@ -124,104 +153,22 @@ def validate_assessment(
 
     facts = deepcopy(raw_facts)
     requirements = policy["requirements"]
-    risk_model = policy["risk_model"]
     fields = {item["field"]: item for item in requirements["fields"]}
-    supported = set(fields) | {"assessment_id", "schema_version"}
+    schema = requirements["input_schema"]
+    properties = schema["properties"]
     issues: list[dict[str, Any]] = []
-
-    for field in sorted(set(facts) - supported):
-        issues.append(
-            _issue(
-                field,
-                "invalid",
-                "Remove the unsupported assessment field.",
-                "Unknown assessment field.",
-            )
-        )
-
-    for field, requirement in fields.items():
-        if field not in facts or facts[field] is None or facts[field] == "":
-            issues.append(
-                _issue(
-                    field,
-                    "missing",
-                    requirement["question"],
-                    allowed_values=requirement.get("allowed_values") or None,
-                )
-            )
+    for field in sorted(set(facts) - set(properties)):
+        issues.append(_issue(field, "invalid", "Remove the unsupported assessment field.", "Unknown assessment field."))
+    for field in (name for name in schema["required"] if name not in requirements["managed_fields"]):
+        if field not in facts:
+            requirement = fields[field]
+            issues.append(_issue(field, "missing", requirement["question"], allowed_values=requirement.get("allowed_values") or None))
+    for field, value in facts.items():
+        if field not in properties:
             continue
-
-        value = facts[field]
-        allowed = risk_model["enums"].get(field)
-        if requirement.get("accepts_multiple"):
-            if not isinstance(value, list):
-                issues.append(
-                    _issue(
-                        field,
-                        "invalid",
-                        requirement["question"],
-                        "Provide a JSON array, including an empty array when none apply.",
-                        allowed,
-                    )
-                )
-            elif len(value) != len(set(value)):
-                issues.append(
-                    _issue(
-                        field,
-                        "invalid",
-                        requirement["question"],
-                        "Values must not be duplicated.",
-                        allowed,
-                    )
-                )
-            elif allowed and any(item not in allowed for item in value):
-                issues.append(
-                    _issue(
-                        field,
-                        "invalid",
-                        requirement["question"],
-                        "One or more values are unsupported.",
-                        allowed,
-                    )
-                )
-        elif allowed and value not in allowed:
-            issues.append(
-                _issue(
-                    field,
-                    "invalid",
-                    requirement["question"],
-                    "Select one supported value.",
-                    allowed,
-                )
-            )
-        elif not allowed and (not isinstance(value, str) or not value.strip()):
-            issues.append(
-                _issue(
-                    field,
-                    "invalid",
-                    requirement["question"],
-                    "Provide a non-empty text value.",
-                )
-            )
-
-    if "schema_version" in facts and facts["schema_version"] != requirements["schema_version"]:
-        issues.append(
-            _issue(
-                "schema_version",
-                "invalid",
-                f"Use assessment schema version {requirements['schema_version']}.",
-            )
-        )
-    if "assessment_id" in facts and (
-        not isinstance(facts["assessment_id"], str) or not facts["assessment_id"].strip()
-    ):
-        issues.append(
-            _issue(
-                "assessment_id",
-                "invalid",
-                "Omit the assessment ID and allow the skill to generate one.",
-            )
-        )
+        error = _validate_value(value, properties[field])
+        if error:
+            issues.append(_issue(field, "invalid", fields.get(field, {}).get("question", "Provide a supported value."), error))
 
     if issues:
         return {
@@ -488,6 +435,14 @@ def compare_assessments(
         item["control_id"]
         for item in right["recommendations"]["applicable_system_controls"]
     }
+    def outcomes(result):
+        return {item['control_id']: item['outcome'] for group in
+                ('applicable_system_controls', 'undetermined_system_controls', 'enterprise_dependencies')
+                for item in result['recommendations'][group]}
+    a_outcomes, b_outcomes = outcomes(left), outcomes(right)
+    a_rules = {item['rule_id'] for item in left['decision']['applied_rules']}
+    b_rules = {item['rule_id'] for item in right['decision']['applied_rules']}
+    a_facts, b_facts = left['assessment'], right['assessment']
     return {
         "status": "comparison_complete",
         "option_a": left,
@@ -495,6 +450,13 @@ def compare_assessments(
         "tier_changed": left["decision"]["final_tier"] != right["decision"]["final_tier"],
         "controls_added": sorted(right_ids - left_ids),
         "controls_removed": sorted(left_ids - right_ids),
+        "changed_facts": [{'field': key, 'option_a': a_facts[key], 'option_b': b_facts[key]}
+                          for key in a_facts if key not in {'assessment_id', 'schema_version'} and a_facts[key] != b_facts[key]],
+        "rules_added": sorted(b_rules - a_rules),
+        "rules_removed": sorted(a_rules - b_rules),
+        "control_transitions": [{'control_id': key, 'option_a': a_outcomes[key], 'option_b': b_outcomes[key]}
+                                for key in sorted(a_outcomes) if a_outcomes[key] != b_outcomes[key]],
+        "interpretation": "Removed from the applicable set does not mean not applicable. Undetermined controls still require qualified review.",
     }
 
 
