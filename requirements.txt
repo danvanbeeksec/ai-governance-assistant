@@ -120,7 +120,7 @@ pydeck==0.9.3
     # via streamlit
 pyjwt==2.15.1
     # via mcp
-python-dateutil==2.9.0.post0
+python-dateutil==3.0.0
     # via pandas
 python-dotenv==1.2.4
     # via pydantic-settings
