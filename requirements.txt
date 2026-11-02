@@ -105,7 +105,7 @@ pyarrow==26.0.0 ; python_full_version >= '3.11'
     # via streamlit
 pycparser==3.11 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via cffi
-pydantic==2.14.1
+pydantic==2.14.2
     # via
     #   ai-governance-control-plane
     #   mcp
